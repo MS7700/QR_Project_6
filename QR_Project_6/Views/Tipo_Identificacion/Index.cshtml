@@ -4,30 +4,35 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>@ModelMetadataProviders.Current.GetMetadataForType(null, typeof(QR_Project_6.Models.Tipo_Identificacion)).GetDisplayName()</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Agregar Nuevo", "Create", new { }, new { @class = "btn btn-success btn-xs" })
 </p>
 <table class="table">
+    <thead>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Descripcion)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
         </th>
         <th></th>
     </tr>
-
+    </thead>
+    <tbody>
 @foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Descripcion)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TipoID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TipoID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TipoID })
+            <div class="btn-group-vertical">
+                @Html.ActionLink("Editar", "Edit", new { id = item.TipoID }, new { @class = "btn btn-primary btn-xs" })
+                @Html.ActionLink("Detalles", "Details", new { id = item.TipoID }, new { @class = "btn btn-default btn-xs" })
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.TipoID }, new { @class = "btn btn-danger btn-xs" })
+            </div>
         </td>
     </tr>
 }
-
+</tbody>
 </table>

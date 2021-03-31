@@ -22,9 +22,15 @@ namespace QR_Project_6
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/myscripts").Include(
+                "~/Scripts/searchscript.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/bootstrap-journal.css",
+                        "~/Content/mystyle.css"));
+            bundles.Add(new StyleBundle("~/Content/sidebar").Include(
+                        "~/Content/sidebarstyle.css"));
         }
     }
 }

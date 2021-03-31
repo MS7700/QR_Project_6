@@ -38,6 +38,7 @@ namespace QR_Project_6.Controllers.Tipos
         // GET: Tipo_Identificacion/Create
         public ActionResult Create()
         {
+            
             return View();
         }
 

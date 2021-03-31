@@ -1,0 +1,94 @@
+﻿
+@using QR_Project_6.Models
+@using QR_Project_6.Extensions
+
+@Styles.Render("~/Content/sidebar")
+
+<a href="javascript:void(0)" id="openbtn" onclick="openNav()">☰</a>
+<a href="javascript:void(0)" id="closebtn" onclick="closeNav()">X</a>
+<div id="mySidebar" class="sidebar nav nav-sidebar">
+    @if (User.IsInRole("Admin"))
+    {
+        @HtmlHelperExtensions.SidebarElement("Quejas", "Quejas")
+        @HtmlHelperExtensions.SidebarElement("Reclamacions", "Reclamaciones")
+        @HtmlHelperExtensions.SidebarElement("Respuesta_Cliente", "Respuestas de clientes")
+        @HtmlHelperExtensions.SidebarElement("Respuesta_Empleado", "Respuestas de empleados")
+        @HtmlHelperExtensions.SidebarElement("Clientes", "Clientes")
+        @HtmlHelperExtensions.SidebarElement("Empleadoes", "Empleados")
+        @HtmlHelperExtensions.SidebarElement("Productoes", "Productos")
+        @HtmlHelperExtensions.SidebarElement("Transaccions", "Transacciones")
+        @HtmlHelperExtensions.SidebarElement("Transaccion_Producto", "Trasacciones de productos")
+        @HtmlHelperExtensions.SidebarElement("Departamentoes", "Departamentos")
+        @HtmlHelperExtensions.SidebarElement("Sucursals", "Sucursales")
+        @HtmlHelperExtensions.SidebarElement("Direccions", "Direcciones")
+        @HtmlHelperExtensions.SidebarElement("Pais", "Países")
+        @HtmlHelperExtensions.SidebarElement("Tipo_Identificacion", "Tipos de identificaciones")
+        @HtmlHelperExtensions.SidebarElement("Tipo_Producto", "Tipos de productos")
+        @HtmlHelperExtensions.SidebarElement("Tipo_Queja", "Tipos de quejas")
+        @HtmlHelperExtensions.SidebarElement("Tipo_Reclamacion", "Tipos de reclamaciones")
+        @HtmlHelperExtensions.SidebarElement("Estado_Cliente", "Estados de cliente")
+        @HtmlHelperExtensions.SidebarElement("Estado_QR", "Estados de QR")
+        @HtmlHelperExtensions.SidebarElement("Estado_Transaccion", "Estados de transacción")
+    }
+    else if (User.IsInRole("Empleado"))
+    {
+        @HtmlHelperExtensions.SidebarElement("Quejas", "Quejas")
+        @HtmlHelperExtensions.SidebarElement("Reclamacions", "Reclamaciones")
+        @HtmlHelperExtensions.SidebarElement("Clientes", "Clientes")
+        @HtmlHelperExtensions.SidebarElement("Empleadoes", "Empleados")
+        @HtmlHelperExtensions.SidebarElement("Productoes", "Productos")
+    }
+    else if (User.IsInRole("Cliente"))
+    {
+        @HtmlHelperExtensions.SidebarElement("Quejas", "Mis quejas")
+        @HtmlHelperExtensions.SidebarElement("Reclamacions", "Mis reclamaciones")
+        @HtmlHelperExtensions.SidebarElement("Productoes", "Productos")
+    }
+
+</div>
+<script type="text/javascript">
+    function selectController() {
+        id = "@Html.Controller()";
+       
+        console.log(id);
+        selected = document.getElementById(id);
+        if (selected !== null) {
+            select(selected);
+        }
+    }
+    function select(myButton) {
+        selected = document.getElementsByClassName("selected");
+        console.log(selected);
+        if (selected.length > 0) {
+            if (!selected[0].isEqualNode(myButton)) {
+                console.log("equals");
+                selected[0].classList.remove("selected");
+                myButton.classList.add("selected");
+
+            }
+        } else {
+            console.log("newselected");
+            myButton.classList.add("selected");
+        }
+        myButton.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+
+    function onload() {
+        selectController();
+    }
+    function openNav() {
+        document.getElementById("mySidebar").style.width = "200px";
+        document.getElementById("main").style.marginLeft = "170px";
+        document.getElementById("closebtn").style.visibility = "visible";
+        document.getElementById("openbtn").style.visibility = "hidden";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidebar").style.width = "0px";
+        document.getElementById("main").style.marginLeft = "0px";
+        document.getElementById("closebtn").style.visibility = "hidden";
+        document.getElementById("openbtn").style.visibility = "visible";
+    }
+
+    window.addEventListener('load', onload);
+</script>

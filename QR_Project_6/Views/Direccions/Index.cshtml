@@ -1,0 +1,73 @@
+﻿@model IEnumerable<QR_Project_6.Models.Direccion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@ModelMetadataProviders.Current.GetMetadataForType(null, typeof(QR_Project_6.Models.Direccion)).GetDisplayName()</h2>
+
+<p>
+    @Html.ActionLink("Agregar Nuevo", "Create", new { }, new { @class = "btn btn-success btn-xs" })
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Provincia)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sector)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Municipio)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barrio)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Direccion_1)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Direccion_2)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Provincia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sector)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Municipio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Barrio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Direccion_1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Direccion_2)
+        </td>
+        <td>
+            <div class="btn-group-vertical">
+                @Html.ActionLink("Editar", "Edit", new { id = item.DireccionID }, new { @class = "btn btn-primary btn-xs" })
+                @Html.ActionLink("Detalles", "Details", new { id = item.DireccionID }, new { @class = "btn btn-default btn-xs" })
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.DireccionID }, new { @class = "btn btn-danger btn-xs" })
+            </div>
+        </td>
+    </tr>
+}
+</tbody>
+</table>

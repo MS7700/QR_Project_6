@@ -19,11 +19,13 @@ namespace QR_Project_6.Models
         public int TransaccionID { get; set; }
         public Nullable<System.DateTime> Fecha { get; set; }
         public Nullable<decimal> Monto { get; set; }
-    
+        public int Cliente_PersonaID { get; set; }
         public virtual Cliente Cliente { get; set; }
+        public int Empleado_PersonaID { get; set; }
         public virtual Empleado Empleado { get; set; }
+        public int Estado_Transaccion_EstadoID { get; set; }
         public virtual Estado_Transaccion Estado_Transaccion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Producto> Producto { get; set; }
+        public virtual ICollection<Transaccion_Producto> Transaccion_Productos { get; set; }
     }
 }

@@ -1,0 +1,67 @@
+﻿.navbar-brand img {
+    height: 60px;
+    padding-right: 15px;
+}
+
+.img-holder {
+    padding: 0 15px 0 15px;
+    display: flex;
+    align-items: center;
+}
+
+.figure-img {
+    max-width: 70%;
+    margin: auto;
+    display: block;
+}
+
+.figure-caption {
+    text-align: center;
+}
+
+/*.sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0px;
+    height: calc(100vh - 60px);
+    background-color: rgb(250,250,255);
+    width: 225px;
+}*/
+
+.content {
+    margin-left: 200px;
+}
+
+.nav-sidebar > li {
+    font-family: "News Cycle", "Arial Narrow Bold", sans-serif;
+}
+
+.title {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+    .title > * {
+        display: inline-block;
+    }
+
+    .title > h2 {
+        vertical-align: sub;
+    }
+
+.contact-image {
+    height: 60vh;
+}
+
+.dl-horizontal dt {
+    float: left;
+    width: 200px !important;
+    clear: left;
+    text-align: right;
+    overflow: visible !important;
+    white-space: normal !important;
+}
+
+.dl-horizontal dd {
+    margin-left: 210px;
+}

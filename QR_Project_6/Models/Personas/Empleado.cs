@@ -19,9 +19,10 @@ namespace QR_Project_6.Models
         public override int PersonaID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Departamento> Departamento { get; set; }
-        public virtual Departamento Departamento1 { get; set; }
-        
+        public virtual ICollection<Departamento> Departamento1 { get; set; }
+        public int Departamento_DepartamentoID { get; set; }
+        public virtual Departamento Departamento { get; set; }
+        public int Sucursal_SucursalID { get; set; }
         public virtual Sucursal Sucursal { get; set; }
         
         public virtual ICollection<Respuesta_Empleado> Respuesta_Empleado { get; set; }

@@ -17,12 +17,17 @@ namespace QR_Project_6.Models
     {
         [Key]
         public override Nullable<int> RespuestaID { get; set; }
-    
+        public int Departamento_Departamento_OrigenID { get; set; }
         public virtual Departamento Departamento_Origen { get; set; }
+        public int Departamento_Departamento_DestinoID { get; set; }
         public virtual Departamento Departamento_Destino { get; set; }
+        public int Empleado_Empleado_OrigenID { get; set; }
         public virtual Empleado Empleado_Origen { get; set; }
+        public int Empleado_Empleado_DestinoID { get; set; }
         public virtual Empleado Empleado_Destino { get; set; }
+        public int Sucursal_Sucursal_OrigenID { get; set; }
         public virtual Sucursal Sucursal_Origen { get; set; }
+        public int Sucursal_Sucursal_DestinoID { get; set; }
         public virtual Sucursal Sucursal_Destino { get; set; }
     }
 }

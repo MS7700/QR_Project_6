@@ -11,15 +11,18 @@ namespace QR_Project_6.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class Departamento
     {
-        
-    
+
+
         public int DepartamentoID { get; set; }
         public string Nombre { get; set; }
+        [ForeignKey("EmpleadoRepresentante")]
+        public int Empleado_PersonaID { get; set; }
     
-        public virtual Empleado Empleado { get; set; }
+        public virtual Empleado EmpleadoRepresentante { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Empleado> Empleado1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

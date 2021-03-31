@@ -17,6 +17,7 @@ namespace QR_Project_6.Models
     {
         [Key]
         public override int QRID { get; set; }
+        public int Tipo_Queja_TipoID { get; set; }
         public virtual Tipo_Queja Tipo_Queja { get; set; }
     }
 }

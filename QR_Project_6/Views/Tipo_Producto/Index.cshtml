@@ -1,0 +1,38 @@
+﻿@model IEnumerable<QR_Project_6.Models.Tipo_Producto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@ModelMetadataProviders.Current.GetMetadataForType(null, typeof(QR_Project_6.Models.Tipo_Producto)).GetDisplayName()</h2>
+
+<p>
+    @Html.ActionLink("Agregar Nuevo", "Create", new { }, new { @class = "btn btn-success btn-xs" })
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descripcion)
+        </td>
+        <td>
+            <div class="btn-group-vertical">
+                @Html.ActionLink("Editar", "Edit", new { id = item.TipoID }, new { @class = "btn btn-primary btn-xs" })
+                @Html.ActionLink("Detalles", "Details", new { id = item.TipoID }, new { @class = "btn btn-default btn-xs" })
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.TipoID }, new { @class = "btn btn-danger btn-xs" })
+            </div>
+        </td>
+    </tr>
+}
+</tbody>
+</table>
