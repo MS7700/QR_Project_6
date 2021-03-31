@@ -8,8 +8,10 @@ namespace QR_Project_6.Models
 {
     public class QR_ModelInitializer : DropCreateDatabaseAlways<QR_Model>
     {
+        
         protected override void Seed(QR_Model context)
         {
+            
             context.Tipo_Identificacions.AddRange(tipo_Identificacions());
             base.Seed(context);
         }
@@ -52,12 +54,39 @@ namespace QR_Project_6.Models
         }
         private List<Estado_QR> estado_QRs()
         {
-            return new List<Estado_QR>()
+            Estados.Estado_QR_Helper helper = new Estados.Estado_QR_Helper();
+            return helper.GetEstado_QRs();
+        }
+
+        private List<Pais> paises()
+        {
+            return new List<Pais>()
             {
-                new Estado_QR(){ Descripcion = "Mal servicio"},
-                new Estado_QR(){ Descripcion = "Cobros compulsivos"},
-                new Estado_QR(){ Descripcion = "Tardanza en la entrega"},
-                new Estado_QR(){ Descripcion = "Producto en mal estado"}
+                new Pais(){ Nombre_Pais = "República Dominicana"},
+                new Pais(){ Nombre_Pais = "México"},
+                new Pais(){ Nombre_Pais = "Puerto Rico"},
+                new Pais(){ Nombre_Pais = "Estados Unidos"}
+            };
+        }
+        private List<Sucursal> sucursals()
+        {
+            return new List<Sucursal>()
+            {
+                new Sucursal(){ Nombre = "Villa Consuelo"},
+                new Sucursal(){ Nombre = "Arroyo Hondo"},
+                new Sucursal(){ Nombre = "Villa Mella"}
+            };
+        }
+        private List<Departamento> departamentos()
+        {
+            return new List<Departamento>()
+            {
+                new Departamento(){ Nombre = "Ventas"},
+                new Departamento(){ Nombre = "Recursos Humanos"},
+                new Departamento(){ Nombre = "Servicio al cliente"},
+                new Departamento(){ Nombre = "Transporte"},
+                new Departamento(){ Nombre = "Gerencia"},
+                new Departamento(){ Nombre = "Soporte técnico"}
             };
         }
 

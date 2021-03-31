@@ -9,6 +9,7 @@ namespace QR_Project_6
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            createRolesandUsers();
         }
     }
 }

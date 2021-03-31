@@ -15,6 +15,7 @@ namespace QR_Project_6.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private QR_Model db = new QR_Model();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -171,7 +172,127 @@ namespace QR_Project_6.Controllers
             // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
             return View(model);
         }
+        // GET: /Account/RegisterEmpleado
+        [AllowAnonymous]
+        public ActionResult RegisterEmpleado()
+        {
+            ViewBag.DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
+            ViewBag.Estado_ClienteID = new SelectList(db.Estado_Clientes, "Estado_ClienteID", "Descripcion");
+            ViewBag.SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre");
+            ViewBag.Tipo_IdentificacionID = new SelectList(db.Tipo_Identificacions, "Tipo_IdentificacionID", "Descripcion");
 
+            ViewBag.PaisID = new SelectList(db.Paises, "PaisID", "Nombre_Pais");
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> RegisterEmpleado(RegisterEmpleadoViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            var r = UserManager.AddToRole(user.Id, "Empleado");
+        //            model.EmpleadoVM.Empleado.Id_UserName = user.Id;
+
+        //            db.Direccions.Add(model.EmpleadoVM.Direccion);
+        //            db.SaveChanges();
+
+        //            model.EmpleadoVM.Empleado.Fecha_Ingreso = DateTime.Now;
+        //            model.EmpleadoVM.Empleado.Id_Direccion = model.EmpleadoVM.Direccion.Id_Direccion;
+        //            db.Empleados.Add(model.EmpleadoVM.Empleado);
+        //            db.SaveChanges();
+        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+        //            // Para obtener más información sobre cómo habilitar la confirmación de cuentas y el restablecimiento de contraseña, visite https://go.microsoft.com/fwlink/?LinkID=320771
+        //            // Enviar correo electrónico con este vínculo
+        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+        //            // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
+
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        AddErrors(result);
+        //    }
+        //    ViewBag.ID_Departamento = new SelectList(db.Departamentos, "ID_Departamento", "Nombre", model.EmpleadoVM.Empleado.ID_Departamento);
+        //    ViewBag.Id_Estado_Cliente = new SelectList(db.Estado_Clientes, "Id_Estado_Cliente", "Descripcion", model.EmpleadoVM.Empleado.Id_Estado_Cliente);
+        //    ViewBag.Id_Sucursal = new SelectList(db.Sucursals, "ID_Sucursal", "Nombre", model.EmpleadoVM.Empleado.Id_Sucursal);
+        //    ViewBag.Id_Tipo_Identificacion = new SelectList(db.Tipo_Identificacions, "Id_Tipo_Identificacion", "Descripcion", model.EmpleadoVM.Empleado.Id_Tipo_Identificacion);
+
+        //    ViewBag.Id_Pais = new SelectList(db.Paises, "Id_Pais", "Nombre_Pais", model.EmpleadoVM.Direccion.Id_Pais);
+
+
+        //    // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
+        //    return View(model);
+        //}
+
+
+
+        ////
+        //// GET: /Account/RegisterEmpleado
+        //[AllowAnonymous]
+        //public ActionResult RegisterCliente()
+        //{
+
+        //    ViewBag.Id_Estado_Cliente = new SelectList(db.Estado_Clientes, "Id_Estado_Cliente", "Descripcion");
+        //    ViewBag.Id_Tipo_Identificacion = new SelectList(db.Tipo_Identificacions, "Id_Tipo_Identificacion", "Descripcion");
+
+        //    ViewBag.Id_Pais = new SelectList(db.Paises, "Id_Pais", "Nombre_Pais");
+        //    return View();
+        //}
+
+        ////
+        //// POST: /Account/Register
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> RegisterCliente(RegisterClienteViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            var r = UserManager.AddToRole(user.Id, "Cliente");
+        //            model.ClienteVM.Cliente.Id_UserName = user.Id;
+
+        //            db.Direccions.Add(model.ClienteVM.Direccion);
+        //            db.SaveChanges();
+
+        //            model.ClienteVM.Cliente.Fecha_Ingreso = DateTime.Now;
+        //            model.ClienteVM.Cliente.Id_Direccion = model.ClienteVM.Direccion.Id_Direccion;
+        //            db.Clientes.Add(model.ClienteVM.Cliente);
+        //            db.SaveChanges();
+        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+        //            // Para obtener más información sobre cómo habilitar la confirmación de cuentas y el restablecimiento de contraseña, visite https://go.microsoft.com/fwlink/?LinkID=320771
+        //            // Enviar correo electrónico con este vínculo
+        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+        //            // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
+
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        AddErrors(result);
+        //    }
+        //    ViewBag.Id_Estado_Cliente = new SelectList(db.Estado_Clientes, "Id_Estado_Cliente", "Descripcion", model.ClienteVM.Cliente.Id_Estado_Cliente);
+        //    ViewBag.Id_Tipo_Identificacion = new SelectList(db.Tipo_Identificacions, "Id_Tipo_Identificacion", "Descripcion", model.ClienteVM.Cliente.Id_Tipo_Identificacion);
+
+        //    ViewBag.Id_Pais = new SelectList(db.Paises, "Id_Pais", "Nombre_Pais", model.ClienteVM.Direccion.Id_Pais);
+
+
+        //    // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
+        //    return View(model);
+        //}
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
