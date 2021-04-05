@@ -15,21 +15,49 @@ namespace QR_Project_6.Models
 
     public partial class Empleado : Persona
     {
+        //[Key]
+        //public override int PersonaID { get; set; }
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<Departamento> Departamento1 { get; set; }
+        //public int Departamento_DepartamentoID { get; set; }
+        //public virtual Departamento Departamento { get; set; }
+        //public int Sucursal_SucursalID { get; set; }
+        //public virtual Sucursal Sucursal { get; set; }
+
+
+
         [Key]
-        public override int PersonaID { get; set; }
-    
+        public override Nullable<int> PersonaID { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Departamento> Departamento1 { get; set; }
-        public int Departamento_DepartamentoID { get; set; }
+        public Nullable<int> Departamento_DepartamentoID { get; set; }
         public virtual Departamento Departamento { get; set; }
-        public int Sucursal_SucursalID { get; set; }
+        public Nullable<int> Sucursal_SucursalID { get; set; }
         public virtual Sucursal Sucursal { get; set; }
-        
+
+
         public virtual ICollection<Respuesta_Empleado> Respuesta_Empleado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Respuesta_Empleado> Respuesta_Empleado1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sucursal> Sucursal1 { get; set; }
-    
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Queja> Queja { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reclamacion> Reclamacion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Transaccion> Transaccion { get; set; }
+
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public override ICollection<Queja> Queja { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public override ICollection<Reclamacion> Reclamacion { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public override ICollection<Transaccion> Transaccion { get; set; }
+
     }
 }

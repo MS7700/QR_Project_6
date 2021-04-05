@@ -15,7 +15,7 @@ namespace QR_Project_6.Models
     public partial class Pais
     {
         
-        public int PaisID { get; set; }
+        public Nullable<int> PaisID { get; set; }
         public string Nombre_Pais { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

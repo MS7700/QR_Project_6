@@ -15,7 +15,7 @@ namespace QR_Project_6.Models
     public partial class Direccion
     {
         
-        public int DireccionID { get; set; }
+        public Nullable<int> DireccionID { get; set; }
         public string Provincia { get; set; }
         public string Sector { get; set; }
         public string Municipio { get; set; }
@@ -25,7 +25,7 @@ namespace QR_Project_6.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cliente> Cliente { get; set; }
-        public int Pais_PaisID { get; set; }
+        public Nullable<int> Pais_PaisID { get; set; }
         public virtual Pais Pais { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Empleado> Empleado { get; set; }

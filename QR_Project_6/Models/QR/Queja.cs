@@ -16,8 +16,17 @@ namespace QR_Project_6.Models
     public partial class Queja : QR
     {
         [Key]
-        public override int QRID { get; set; }
-        public int Tipo_Queja_TipoID { get; set; }
+        public override Nullable<int> QRID { get; set; }
+        public Nullable<int> Tipo_Queja_TipoID { get; set; }
         public virtual Tipo_Queja Tipo_Queja { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Respuesta_Empleado> Respuesta_Empleado { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Respuesta_Cliente> Respuesta_Cliente { get; set; }
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public override ICollection<Respuesta_Empleado> Respuesta_Empleado { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public override ICollection<Respuesta_Cliente> Respuesta_Cliente { get; set; }
     }
 }

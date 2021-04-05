@@ -18,7 +18,7 @@ namespace QR_Project_6.Models
     {
 
         [Key]
-        public override int TipoID { get; set; }
+        public override Nullable<int> TipoID { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Queja> Queja { get; set; }
