@@ -4,8 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using QR_Project_6.Models;
 
 namespace QR_Project_6.Controllers
@@ -120,9 +123,22 @@ namespace QR_Project_6.Controllers
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
+            ApplicationDbContext context = new ApplicationDbContext();
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
             Cliente cliente = db.Clientes.Find(id);
+
+            var user = await UserManager.FindByEmailAsync(cliente.UserNameID);
+            var roles = await UserManager.GetRolesAsync(user.Id);
+            foreach (var role in roles.ToList())
+            {
+                var r = await UserManager.RemoveFromRoleAsync(user.Id, role);
+            }
+            var rc = await UserManager.DeleteAsync(user);
+
             db.Clientes.Remove(cliente);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -47,10 +47,16 @@ namespace QR_Project_6.Models
 
         [Display(Name = "Dirección")]
         public virtual Direccion Direccion { get; set; }
+        [Display(Name = "Dirección")]
+        public Nullable<int> Direccion_DireccionID { get; set; }
         [Display(Name = "Estado del cliente")]
         public virtual Estado_Cliente Estado_Cliente { get; set; }
+        [Display(Name = "Estado del cliente")]
+        public Nullable<int> Estado_Cliente_Estado_ClienteID { get; set; }
         [Display(Name = "Tipo de identificación")]
         public virtual Tipo_Identificacion Tipo_Identificacion { get; set; }
+        [Display(Name = "Tipo de identificación")]
+        public Nullable<int> Tipo_Identificacion_Tipo_IdentificacionID { get; set; }
     }
 
     [DisplayName("Departamento")]
@@ -62,6 +68,8 @@ namespace QR_Project_6.Models
         public string Nombre { get; set; }
         [Display(Name = "Representante")]
         public virtual Empleado EmpleadoRepresentante { get; set; }
+        [Display(Name = "Representante")]
+        public Nullable<int> Empleado_PersonaID { get; set; }
     }
 
     [DisplayColumn("DireccionID")]
@@ -80,6 +88,8 @@ namespace QR_Project_6.Models
         public string Direccion_2 { get; set; }
         [Display(Name = "País")]
         public virtual Pais Pais { get; set; }
+        [Display(Name = "País")]
+        public Nullable<int> Pais_PaisID { get; set; }
     }
 
     [DisplayColumn("Identificacion")]
@@ -106,15 +116,26 @@ namespace QR_Project_6.Models
         public string UserNameID { get; set; }
         [Display(Name = "Departamento")]
         public virtual Departamento Departamento { get; set; }
+        [Display(Name = "Departamento")]
+        public Nullable<int> Departamento_DepartamentoID { get; set; }
+
         [Display(Name = "Dirección")]
         public virtual Direccion Direccion { get; set; }
+        [Display(Name = "Dirección")]
+        public Nullable<int> Direccion_DireccionID { get; set; }
         [Display(Name = "Estado del empleado")]
         public virtual Estado_Cliente Estado_Cliente { get; set; }
-        [Display(Name = "Sucursal")]
-        public virtual Sucursal Sucursal { get; set; }
+        [Display(Name = "Estado del empleado")]
+        public Nullable<int> Estado_Cliente_Estado_ClienteID { get; set; }
         [Display(Name = "Tipo de identificación")]
         public virtual Tipo_Identificacion Tipo_Identificacion { get; set; }
-        
+        [Display(Name = "Tipo de identificación")]
+        public Nullable<int> Tipo_Identificacion_Tipo_IdentificacionID { get; set; }
+        [Display(Name = "Sucursal")]
+        public virtual Sucursal Sucursal { get; set; }
+        [Display(Name = "Sucursal")]
+        public Nullable<int> Sucursal_SucursalID { get; set; }
+
     }
 
     [DisplayName("Estado del cliente")]
@@ -179,20 +200,33 @@ namespace QR_Project_6.Models
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
         public Nullable<System.DateTime> Fecha { get; set; }
-        [Display(Name = "Sucursal")]
-        public virtual Sucursal Sucursal { get; set; }
         [DataType(DataType.MultilineText)]
         public string Comentario { get; set; }
+        [Display(Name = "Sucursal")]
+        public virtual Sucursal Sucursal { get; set; }
+        [Display(Name = "Sucursal")]
+        public Nullable<int> Sucursal_SucursalID { get; set; }
+        
         [Display(Name = "Cliente")]
         public virtual Cliente Cliente { get; set; }
+        [Display(Name = "Cliente")]
+        public Nullable<int> Cliente_ClienteID { get; set; }
         [Display(Name = "Departamento")]
         public virtual Departamento Departamento { get; set; }
+        [Display(Name = "Departamento")]
+        public Nullable<int> Departamento_DepartamentoID { get; set; }
         [Display(Name = "Empleado")]
         public virtual Empleado Empleado { get; set; }
+        [Display(Name = "Empleado")]
+        public Nullable<int> Empleado_EmpleadoID { get; set; }
         [Display(Name = "Estado de queja")]
         public virtual Estado_QR Estado_QR { get; set; }
+        [Display(Name = "Estado de queja")]
+        public Nullable<int> Estado_QR_EstadoID { get; set; }
         [Display(Name = "Tipo de queja")]
         public virtual Tipo_Queja Tipo_Queja { get; set; }
+        [Display(Name = "Tipo de queja")]
+        public Nullable<int> Tipo_Queja_TipoID { get; set; }
     }
 
     [DisplayColumn("QRID")]
@@ -206,20 +240,36 @@ namespace QR_Project_6.Models
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
         public Nullable<System.DateTime> Fecha { get; set; }
-        [Display(Name = "Sucursal")]
-        public virtual Sucursal Sucursal { get; set; }
+        
         [DataType(DataType.MultilineText)]
         public string Comentario { get; set; }
+
+        [Display(Name = "Sucursal")]
+        public virtual Sucursal Sucursal { get; set; }
+        [Display(Name = "Sucursal")]
+        public Nullable<int> Sucursal_SucursalID { get; set; }
+
         [Display(Name = "Cliente")]
         public virtual Cliente Cliente { get; set; }
+        [Display(Name = "Cliente")]
+        public Nullable<int> Cliente_ClienteID { get; set; }
         [Display(Name = "Departamento")]
         public virtual Departamento Departamento { get; set; }
+        [Display(Name = "Departamento")]
+        public Nullable<int> Departamento_DepartamentoID { get; set; }
         [Display(Name = "Empleado")]
         public virtual Empleado Empleado { get; set; }
-        [Display(Name = "Estado de reclamación")]
+        [Display(Name = "Empleado")]
+        public Nullable<int> Empleado_EmpleadoID { get; set; }
+        [Display(Name = "Estado de queja")]
         public virtual Estado_QR Estado_QR { get; set; }
+        [Display(Name = "Estado de queja")]
+        public Nullable<int> Estado_QR_EstadoID { get; set; }
+
         [Display(Name = "Tipo de reclamación")]
         public virtual Tipo_Reclamacion Tipo_Reclamacion { get; set; }
+        [Display(Name = "Tipo de reclamación")]
+        public Nullable<int> Tipo_Reclamacion_TipoID { get; set; }
     }
 
     [DisplayColumn("TransaccionID")]
@@ -255,12 +305,20 @@ namespace QR_Project_6.Models
 
         [Display(Name = "Estado origen")]
         public virtual Estado_QR Estado_Origen { get; set; }
+        [Display(Name = "Estado origen")]
+        public Nullable<int> Estado_QR_Estado_OrigenID { get; set; }
         [Display(Name = "Estado destino")]
         public virtual Estado_QR Estado_Destino { get; set; }
+        [Display(Name = "Estado destino")]
+        public Nullable<int> Estado_QR_Estado_DestinoID { get; set; }
         [Display(Name = "Queja")]
         public virtual Queja Queja { get; set; }
+        [Display(Name = "Queja")]
+        public Nullable<int> Queja_QuejaID { get; set; }
         [Display(Name = "Reclamación")]
         public virtual Reclamacion Reclamacion { get; set; }
+        [Display(Name = "Reclamación")]
+        public Nullable<int> Reclamacion_ReclamacionID { get; set; }
     }
 
     [DisplayColumn("RespuestaID")]
@@ -279,24 +337,46 @@ namespace QR_Project_6.Models
 
         [Display(Name = "Departamento origen")]
         public virtual Departamento Departamento_Origen { get; set; }
+        [Display(Name = "Departamento origen")]
+        public Nullable<int> Departamento_Departamento_OrigenID { get; set; }
+        
         [Display(Name = "Departamento destino")]
         public virtual Departamento Departamento_Destino { get; set; }
+        [Display(Name = "Departamento destino")]
+        public Nullable<int> Departamento_Departamento_DestinoID { get; set; }
+        
         [Display(Name = "Empleado origen")]
         public virtual Empleado Empleado_Origen { get; set; }
+        [Display(Name = "Empleado origen")]
+        public Nullable<int> Empleado_Empleado_OrigenID { get; set; }
         [Display(Name = "Empleado destino")]
         public virtual Empleado Empleado_Destino { get; set; }
+        [Display(Name = "Empleado destino")]
+        public Nullable<int> Empleado_Empleado_DestinoID { get; set; }
         [Display(Name = "Estado origen")]
         public virtual Estado_QR Estado_Origen { get; set; }
+        [Display(Name = "Estado origen")]
+        public Nullable<int> Estado_QR_Estado_OrigenID { get; set; }
         [Display(Name = "Estado destino")]
         public virtual Estado_QR Estado_Destino { get; set; }
+        [Display(Name = "Estado destino")]
+        public Nullable<int> Estado_QR_Estado_DestinoID { get; set; }
         [Display(Name = "Queja")]
         public virtual Queja Queja { get; set; }
+        [Display(Name = "Queja")]
+        public Nullable<int> Queja_QuejaID { get; set; }
         [Display(Name = "Reclamación")]
         public virtual Reclamacion Reclamacion { get; set; }
+        [Display(Name = "Reclamación")]
+        public Nullable<int> Reclamacion_ReclamacionID { get; set; }
         [Display(Name = "Sucursal origen")]
         public virtual Sucursal Sucursal_Origen { get; set; }
+        [Display(Name = "Sucursal origen")]
+        public Nullable<int> Sucursal_Sucursal_OrigenID { get; set; }
         [Display(Name = "Sucursal destino")]
         public virtual Sucursal Sucursal_Destino { get; set; }
+        [Display(Name = "Sucursal destino")]
+        public Nullable<int> Sucursal_Sucursal_DestinoID { get; set; }
     }
 
     [DisplayName("Sucursal")]
@@ -308,6 +388,8 @@ namespace QR_Project_6.Models
         public string Nombre { get; set; }
         [Display(Name = "Representante")]
         public virtual Empleado EmpleadoRepresentante { get; set; }
+        [Display(Name = "Representante")]
+        public Nullable<int> Empleado_PersonaID { get; set; }
     }
 
     [DisplayName("Tipo de identificación")]
@@ -361,10 +443,16 @@ namespace QR_Project_6.Models
 
         [Display(Name = "Cliente")]
         public virtual Cliente Cliente { get; set; }
+        [Display(Name = "Cliente")]
+        public Nullable<int> Cliente_PersonaID { get; set; }
         [Display(Name = "Vendedor")]
         public virtual Empleado Empleado { get; set; }
+        [Display(Name = "Vendedor")]
+        public Nullable<int> Empleado_PersonaID { get; set; }
         [Display(Name = "Estado de transacción")]
         public virtual Estado_Transaccion Estado_Transaccion { get; set; }
+        [Display(Name = "Estado de transacción")]
+        public Nullable<int> Estado_Transaccion_EstadoID { get; set; }
     }
 
 }
