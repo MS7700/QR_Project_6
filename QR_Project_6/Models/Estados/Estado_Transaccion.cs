@@ -18,7 +18,7 @@ namespace QR_Project_6.Models
 
 
         [Key]
-        public override int EstadoID { get; set; }
+        public override Nullable<int> EstadoID { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaccion> Transaccion { get; set; }
     }

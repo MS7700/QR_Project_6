@@ -16,10 +16,10 @@ namespace QR_Project_6.Models
     {
         
     
-        public int ProductoID { get; set; }
+        public Nullable<int> ProductoID { get; set; }
         public string Nombre { get; set; }
         public Nullable<decimal> Monto { get; set; }
-        public int Tipo_Producto_TipoID { get; set; }
+        public Nullable<int> Tipo_Producto_TipoID { get; set; }
         public virtual Tipo_Producto Tipo_Producto { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaccion_Producto> Transaccion_Productos { get; set; }

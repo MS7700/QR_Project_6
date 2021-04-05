@@ -9,7 +9,7 @@ namespace QR_Project_6.Models
     public abstract class Estado
     {
         
-        public virtual int EstadoID { get; set; }
+        public virtual Nullable<int> EstadoID { get; set; }
         public string Descripcion { get; set; }
     }
 }

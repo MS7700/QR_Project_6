@@ -17,10 +17,10 @@ namespace QR_Project_6.Models
     {
 
 
-        public int DepartamentoID { get; set; }
+        public Nullable<int> DepartamentoID { get; set; }
         public string Nombre { get; set; }
         [ForeignKey("EmpleadoRepresentante")]
-        public int Empleado_PersonaID { get; set; }
+        public Nullable<int> Empleado_PersonaID { get; set; }
     
         public virtual Empleado EmpleadoRepresentante { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -17,7 +17,7 @@ namespace QR_Project_6.Models
     {
         
     
-        public int SucursalID { get; set; }
+        public Nullable<int> SucursalID { get; set; }
         public string Nombre { get; set; }
     
         
