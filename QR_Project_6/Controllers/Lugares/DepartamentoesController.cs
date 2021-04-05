@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.Lugares
+namespace QR_Project_6.Controllers
 {
     public class DepartamentoesController : Controller
     {
@@ -17,7 +17,8 @@ namespace QR_Project_6.Controllers.Lugares
         // GET: Departamentoes
         public ActionResult Index()
         {
-            return View(db.Departamentos.ToList());
+            var departamentos = db.Departamentos.Include(d => d.EmpleadoRepresentante);
+            return View(departamentos.ToList());
         }
 
         // GET: Departamentoes/Details/5
@@ -38,6 +39,7 @@ namespace QR_Project_6.Controllers.Lugares
         // GET: Departamentoes/Create
         public ActionResult Create()
         {
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
             return View();
         }
 
@@ -46,7 +48,7 @@ namespace QR_Project_6.Controllers.Lugares
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DepartamentoID,Nombre")] Departamento departamento)
+        public ActionResult Create([Bind(Include = "DepartamentoID,Nombre,Empleado_PersonaID")] Departamento departamento)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +57,7 @@ namespace QR_Project_6.Controllers.Lugares
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion", departamento.Empleado_PersonaID);
             return View(departamento);
         }
 
@@ -70,6 +73,7 @@ namespace QR_Project_6.Controllers.Lugares
             {
                 return HttpNotFound();
             }
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion", departamento.Empleado_PersonaID);
             return View(departamento);
         }
 
@@ -78,7 +82,7 @@ namespace QR_Project_6.Controllers.Lugares
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DepartamentoID,Nombre")] Departamento departamento)
+        public ActionResult Edit([Bind(Include = "DepartamentoID,Nombre,Empleado_PersonaID")] Departamento departamento)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +90,7 @@ namespace QR_Project_6.Controllers.Lugares
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion", departamento.Empleado_PersonaID);
             return View(departamento);
         }
 

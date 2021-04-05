@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.Tipos
+namespace QR_Project_6.Controllers
 {
     public class Tipo_IdentificacionController : Controller
     {
@@ -38,7 +38,6 @@ namespace QR_Project_6.Controllers.Tipos
         // GET: Tipo_Identificacion/Create
         public ActionResult Create()
         {
-            
             return View();
         }
 

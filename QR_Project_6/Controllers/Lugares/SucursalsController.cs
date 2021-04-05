@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.Lugares
+namespace QR_Project_6.Controllers
 {
     public class SucursalsController : Controller
     {
@@ -17,7 +17,8 @@ namespace QR_Project_6.Controllers.Lugares
         // GET: Sucursals
         public ActionResult Index()
         {
-            return View(db.Sucursals.ToList());
+            var sucursals = db.Sucursals.Include(s => s.EmpleadoRepresentante);
+            return View(sucursals.ToList());
         }
 
         // GET: Sucursals/Details/5
@@ -38,6 +39,7 @@ namespace QR_Project_6.Controllers.Lugares
         // GET: Sucursals/Create
         public ActionResult Create()
         {
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
             return View();
         }
 
@@ -46,7 +48,7 @@ namespace QR_Project_6.Controllers.Lugares
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SucursalID,Nombre")] Sucursal sucursal)
+        public ActionResult Create([Bind(Include = "SucursalID,Nombre,Empleado_PersonaID")] Sucursal sucursal)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +57,7 @@ namespace QR_Project_6.Controllers.Lugares
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion", sucursal.Empleado_PersonaID);
             return View(sucursal);
         }
 
@@ -70,6 +73,7 @@ namespace QR_Project_6.Controllers.Lugares
             {
                 return HttpNotFound();
             }
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion", sucursal.Empleado_PersonaID);
             return View(sucursal);
         }
 
@@ -78,7 +82,7 @@ namespace QR_Project_6.Controllers.Lugares
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SucursalID,Nombre")] Sucursal sucursal)
+        public ActionResult Edit([Bind(Include = "SucursalID,Nombre,Empleado_PersonaID")] Sucursal sucursal)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +90,7 @@ namespace QR_Project_6.Controllers.Lugares
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.Empleado_PersonaID = new SelectList(db.Empleados, "PersonaID", "Identificacion", sucursal.Empleado_PersonaID);
             return View(sucursal);
         }
 

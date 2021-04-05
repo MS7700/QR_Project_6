@@ -164,6 +164,8 @@ namespace QR_Project_6.Models
         public Nullable<decimal> Monto { get; set; }
         [Display(Name = "Tipo de producto")]
         public virtual Tipo_Producto Tipo_Producto { get; set; }
+        [Display(Name = "Tipo de producto")]
+        public Nullable<int> Tipo_Producto_TipoID { get; set; }
     }
 
     [DisplayColumn("QRID")]

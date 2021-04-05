@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.Personas
+namespace QR_Project_6.Controllers
 {
     public class ClientesController : Controller
     {
@@ -17,7 +17,8 @@ namespace QR_Project_6.Controllers.Personas
         // GET: Clientes
         public ActionResult Index()
         {
-            return View(db.Clientes.ToList());
+            var clientes = db.Clientes.Include(c => c.Direccion).Include(c => c.Estado_Cliente).Include(c => c.Tipo_Identificacion);
+            return View(clientes.ToList());
         }
 
         // GET: Clientes/Details/5
@@ -38,6 +39,9 @@ namespace QR_Project_6.Controllers.Personas
         // GET: Clientes/Create
         public ActionResult Create()
         {
+            ViewBag.Direccion_DireccionID = new SelectList(db.Direccions, "DireccionID", "DireccionID");
+            ViewBag.Estado_Cliente_Estado_ClienteID = new SelectList(db.Estado_Clientes, "EstadoID", "Descripcion");
+            ViewBag.Tipo_Identificacion_Tipo_IdentificacionID = new SelectList(db.Tipo_Identificacions, "TipoID", "Descripcion");
             return View();
         }
 
@@ -46,7 +50,7 @@ namespace QR_Project_6.Controllers.Personas
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID")] Cliente cliente)
+        public ActionResult Create([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +59,9 @@ namespace QR_Project_6.Controllers.Personas
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Direccion_DireccionID = new SelectList(db.Direccions, "DireccionID", "DireccionID", cliente.Direccion_DireccionID);
+            ViewBag.Estado_Cliente_Estado_ClienteID = new SelectList(db.Estado_Clientes, "EstadoID", "Descripcion", cliente.Estado_Cliente_Estado_ClienteID);
+            ViewBag.Tipo_Identificacion_Tipo_IdentificacionID = new SelectList(db.Tipo_Identificacions, "TipoID", "Descripcion", cliente.Tipo_Identificacion_Tipo_IdentificacionID);
             return View(cliente);
         }
 
@@ -70,6 +77,9 @@ namespace QR_Project_6.Controllers.Personas
             {
                 return HttpNotFound();
             }
+            ViewBag.Direccion_DireccionID = new SelectList(db.Direccions, "DireccionID", "DireccionID", cliente.Direccion_DireccionID);
+            ViewBag.Estado_Cliente_Estado_ClienteID = new SelectList(db.Estado_Clientes, "EstadoID", "Descripcion", cliente.Estado_Cliente_Estado_ClienteID);
+            ViewBag.Tipo_Identificacion_Tipo_IdentificacionID = new SelectList(db.Tipo_Identificacions, "TipoID", "Descripcion", cliente.Tipo_Identificacion_Tipo_IdentificacionID);
             return View(cliente);
         }
 
@@ -78,7 +88,7 @@ namespace QR_Project_6.Controllers.Personas
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID")] Cliente cliente)
+        public ActionResult Edit([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +96,9 @@ namespace QR_Project_6.Controllers.Personas
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.Direccion_DireccionID = new SelectList(db.Direccions, "DireccionID", "DireccionID", cliente.Direccion_DireccionID);
+            ViewBag.Estado_Cliente_Estado_ClienteID = new SelectList(db.Estado_Clientes, "EstadoID", "Descripcion", cliente.Estado_Cliente_Estado_ClienteID);
+            ViewBag.Tipo_Identificacion_Tipo_IdentificacionID = new SelectList(db.Tipo_Identificacions, "TipoID", "Descripcion", cliente.Tipo_Identificacion_Tipo_IdentificacionID);
             return View(cliente);
         }
 

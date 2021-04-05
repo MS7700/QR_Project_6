@@ -13,6 +13,30 @@
     <thead>
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Cliente)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Departamento)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Empleado)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estado_QR)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sucursal)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo_Queja)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.UserNameID)
             <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
         </th>
@@ -30,6 +54,24 @@
     <tbody>
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cliente.Identificacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Departamento.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.Identificacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado_QR.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sucursal.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tipo_Queja.Descripcion)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.UserNameID)
         </td>

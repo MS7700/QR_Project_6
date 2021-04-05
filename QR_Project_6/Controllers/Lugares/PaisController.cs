@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.Lugares
+namespace QR_Project_6.Controllers
 {
     public class PaisController : Controller
     {

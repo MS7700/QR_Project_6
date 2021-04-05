@@ -24,11 +24,88 @@ namespace QR_Project_6.Models
             context.Departamentos.AddRange(departamentos());
             context.Estado_Clientes.AddRange(estado_Clientes());
             context.Estado_Transaccions.AddRange(estado_Transaccions());
+            context.SaveChanges();
             //context.Direccions.AddRange(direccions());
+            direccions(context);
+            context.SaveChanges();
             //context.Empleados.AddRange(empleados());
-
+            empleados(context);
             base.Seed(context);
         }
+
+
+        private void direccions(QR_Model context)
+        {
+            Pais pais = context.Paises.Where(p => p.Nombre_Pais == "República Dominicana").FirstOrDefault();
+            context.Direccions.AddRange(
+                new List<Direccion>()
+                {
+                    new Direccion()
+                    {
+                        Provincia = "Distrito Nacional",
+                        Sector = "Arroyo Hondo",
+                        Municipio = "Distrito Nacional",
+                        Barrio = "Arroyo Hondo",
+                        Direccion_1 = "Calle F",
+                        Direccion_2 = "45",
+                        Pais = pais
+                    }
+                }
+            );
+            
+        }
+
+        private void empleados(QR_Model context)
+        {
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var admin = UserManager.FindByName("admin@gmail.com");
+            Direccion direccion = context.Direccions.Find(1);
+            Estado_Cliente estado = context.Estado_Clientes.Where(e => e.Descripcion == "Activo").FirstOrDefault();
+            Tipo_Identificacion tipo = context.Tipo_Identificacions.Where(e => e.Descripcion == "Cédula").FirstOrDefault();
+            Sucursal sucursal = context.Sucursals.Where(e => e.Nombre == "Arroyo Hondo").FirstOrDefault();
+            Departamento departamento = context.Departamentos.Where(e => e.Nombre == "Soporte técnico").FirstOrDefault();
+
+            context.Empleados.AddRange(
+                new List<Empleado>()
+                {
+                    new Empleado()
+                    {
+                        Identificacion = "40200390074",
+                        Nombre = "Manuel",
+                        Apellido = "López",
+                        Fecha_Ingreso = new DateTime(2020,8,15),
+                        Telefono = "8297441345",
+                        UserNameID = admin.Id,
+                        Direccion = direccion,
+                        Estado_Cliente = estado,
+                        Tipo_Identificacion = tipo,
+                        Departamento = departamento,
+                        Sucursal = sucursal
+
+                    }
+                }
+                );
+            
+        }
+
+
+        //private List<Direccion> direccions()
+        //{
+        //    return new List<Direccion>()
+        //    {
+        //        new Direccion()
+        //        {
+        //            Provincia = "Distrito Nacional",
+        //            Sector = "Arroyo Hondo",
+        //            Municipio = "Distrito Nacional",
+        //            Barrio = "Arroyo Hondo",
+        //            Direccion_1 = "Calle F",
+        //            Direccion_2 = "45",
+        //            Pais_PaisID = 0
+        //        }
+        //    };
+        //}
+
         private List<Tipo_Identificacion> tipo_Identificacions()
         {
             return new List<Tipo_Identificacion>()
@@ -122,46 +199,31 @@ namespace QR_Project_6.Models
             };
         }
 
-        private List<Direccion> direccions()
-        {
-            return new List<Direccion>()
-            {
-                new Direccion()
-                {
-                    Provincia = "Distrito Nacional",
-                    Sector = "Arroyo Hondo",
-                    Municipio = "Distrito Nacional",
-                    Barrio = "Arroyo Hondo",
-                    Direccion_1 = "Calle F",
-                    Direccion_2 = "45",
-                    Pais_PaisID = 0
-                }
-            };
-        }
+        
 
-        private List<Empleado> empleados()
-        {
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var admin = UserManager.FindByName("admin@gmail.com");
-            return new List<Empleado>()
-            {
-                new Empleado()
-                {
-                    Identificacion = "40200390074",
-                    Nombre = "Manuel",
-                    Apellido = "López",
-                    Fecha_Ingreso = new DateTime(2020,8,15),
-                    Telefono = "8297441345",
-                    UserNameID = admin.Id,
-                    Direccion_DireccionID = 0,
-                    Estado_Cliente_Estado_ClienteID = 0,
-                    Tipo_Identificacion_Tipo_IdentificacionID = 0,
-                    Departamento_DepartamentoID = 6,
-                    Sucursal_SucursalID = 2
+        //private List<Empleado> empleados()
+        //{
+        //    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        //    var admin = UserManager.FindByName("admin@gmail.com");
+        //    return new List<Empleado>()
+        //    {
+        //        new Empleado()
+        //        {
+        //            Identificacion = "40200390074",
+        //            Nombre = "Manuel",
+        //            Apellido = "López",
+        //            Fecha_Ingreso = new DateTime(2020,8,15),
+        //            Telefono = "8297441345",
+        //            UserNameID = admin.Id,
+        //            Direccion_DireccionID = 0,
+        //            Estado_Cliente_Estado_ClienteID = 0,
+        //            Tipo_Identificacion_Tipo_IdentificacionID = 0,
+        //            Departamento_DepartamentoID = 6,
+        //            Sucursal_SucursalID = 2
 
-                }
-            };
-        }
+        //        }
+        //    };
+        //}
 
     }
     

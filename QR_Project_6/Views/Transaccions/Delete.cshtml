@@ -12,6 +12,30 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Cliente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cliente.Identificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Empleado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Empleado.Identificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado_Transaccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado_Transaccion.Descripcion)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Fecha)
         </dt>
 

@@ -13,6 +13,46 @@
     <thead>
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Departamento_Destino)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Departamento_Origen)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Empleado_Destino)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Empleado_Origen)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estado_Destino)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estado_Origen)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Queja)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reclamacion)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sucursal_Destino)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sucursal_Origen)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Fecha)
             <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
         </th>
@@ -26,6 +66,36 @@
     <tbody>
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Departamento_Destino.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Departamento_Origen.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado_Destino.Identificacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado_Origen.Identificacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado_Destino.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado_Origen.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Queja.QRID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reclamacion.QRID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sucursal_Destino.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sucursal_Origen.Nombre)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Fecha)
         </td>

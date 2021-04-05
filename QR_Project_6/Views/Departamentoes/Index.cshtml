@@ -13,6 +13,10 @@
     <thead>
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.EmpleadoRepresentante)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Nombre)
             <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
         </th>
@@ -22,6 +26,9 @@
     <tbody>
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpleadoRepresentante.Identificacion)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>

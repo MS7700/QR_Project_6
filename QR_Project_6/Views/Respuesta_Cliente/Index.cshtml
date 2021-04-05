@@ -13,6 +13,22 @@
     <thead>
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Estado_Destino)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estado_Origen)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Queja)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reclamacion)
+            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Valoracion)
             <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
         </th>
@@ -30,6 +46,18 @@
     <tbody>
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado_Destino.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado_Origen.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Queja.QRID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reclamacion.QRID)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Valoracion)
         </td>

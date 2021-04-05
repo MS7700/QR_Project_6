@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.QR
+namespace QR_Project_6.Controllers
 {
     public class ReclamacionsController : Controller
     {
@@ -17,7 +17,8 @@ namespace QR_Project_6.Controllers.QR
         // GET: Reclamacions
         public ActionResult Index()
         {
-            return View(db.Reclamacions.ToList());
+            var reclamacions = db.Reclamacions.Include(r => r.Cliente).Include(r => r.Departamento).Include(r => r.Empleado).Include(r => r.Estado_QR).Include(r => r.Sucursal).Include(r => r.Tipo_Reclamacion);
+            return View(reclamacions.ToList());
         }
 
         // GET: Reclamacions/Details/5
@@ -38,6 +39,12 @@ namespace QR_Project_6.Controllers.QR
         // GET: Reclamacions/Create
         public ActionResult Create()
         {
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion");
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion");
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre");
+            ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion");
             return View();
         }
 
@@ -46,7 +53,7 @@ namespace QR_Project_6.Controllers.QR
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "QRID,UserNameID,Fecha,Comentario")] Reclamacion reclamacion)
+        public ActionResult Create([Bind(Include = "QRID,Tipo_Reclamacion_TipoID,UserNameID,Fecha,Comentario,Cliente_ClienteID,Departamento_DepartamentoID,Empleado_EmpleadoID,Estado_QR_EstadoID,Sucursal_SucursalID")] Reclamacion reclamacion)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +62,12 @@ namespace QR_Project_6.Controllers.QR
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion", reclamacion.Cliente_ClienteID);
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", reclamacion.Departamento_DepartamentoID);
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion", reclamacion.Empleado_EmpleadoID);
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", reclamacion.Estado_QR_EstadoID);
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre", reclamacion.Sucursal_SucursalID);
+            ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion", reclamacion.Tipo_Reclamacion_TipoID);
             return View(reclamacion);
         }
 
@@ -70,6 +83,12 @@ namespace QR_Project_6.Controllers.QR
             {
                 return HttpNotFound();
             }
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion", reclamacion.Cliente_ClienteID);
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", reclamacion.Departamento_DepartamentoID);
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion", reclamacion.Empleado_EmpleadoID);
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", reclamacion.Estado_QR_EstadoID);
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre", reclamacion.Sucursal_SucursalID);
+            ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion", reclamacion.Tipo_Reclamacion_TipoID);
             return View(reclamacion);
         }
 
@@ -78,7 +97,7 @@ namespace QR_Project_6.Controllers.QR
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "QRID,UserNameID,Fecha,Comentario")] Reclamacion reclamacion)
+        public ActionResult Edit([Bind(Include = "QRID,Tipo_Reclamacion_TipoID,UserNameID,Fecha,Comentario,Cliente_ClienteID,Departamento_DepartamentoID,Empleado_EmpleadoID,Estado_QR_EstadoID,Sucursal_SucursalID")] Reclamacion reclamacion)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +105,12 @@ namespace QR_Project_6.Controllers.QR
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion", reclamacion.Cliente_ClienteID);
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", reclamacion.Departamento_DepartamentoID);
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion", reclamacion.Empleado_EmpleadoID);
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", reclamacion.Estado_QR_EstadoID);
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre", reclamacion.Sucursal_SucursalID);
+            ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion", reclamacion.Tipo_Reclamacion_TipoID);
             return View(reclamacion);
         }
 

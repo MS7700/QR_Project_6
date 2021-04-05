@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.Lugares
+namespace QR_Project_6.Controllers
 {
     public class DireccionsController : Controller
     {
@@ -17,7 +17,8 @@ namespace QR_Project_6.Controllers.Lugares
         // GET: Direccions
         public ActionResult Index()
         {
-            return View(db.Direccions.ToList());
+            var direccions = db.Direccions.Include(d => d.Pais);
+            return View(direccions.ToList());
         }
 
         // GET: Direccions/Details/5
@@ -38,6 +39,7 @@ namespace QR_Project_6.Controllers.Lugares
         // GET: Direccions/Create
         public ActionResult Create()
         {
+            ViewBag.Pais_PaisID = new SelectList(db.Paises, "PaisID", "Nombre_Pais");
             return View();
         }
 
@@ -46,7 +48,7 @@ namespace QR_Project_6.Controllers.Lugares
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DireccionID,Provincia,Sector,Municipio,Barrio,Direccion_1,Direccion_2")] Direccion direccion)
+        public ActionResult Create([Bind(Include = "DireccionID,Provincia,Sector,Municipio,Barrio,Direccion_1,Direccion_2,Pais_PaisID")] Direccion direccion)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +57,7 @@ namespace QR_Project_6.Controllers.Lugares
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Pais_PaisID = new SelectList(db.Paises, "PaisID", "Nombre_Pais", direccion.Pais_PaisID);
             return View(direccion);
         }
 
@@ -70,6 +73,7 @@ namespace QR_Project_6.Controllers.Lugares
             {
                 return HttpNotFound();
             }
+            ViewBag.Pais_PaisID = new SelectList(db.Paises, "PaisID", "Nombre_Pais", direccion.Pais_PaisID);
             return View(direccion);
         }
 
@@ -78,7 +82,7 @@ namespace QR_Project_6.Controllers.Lugares
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DireccionID,Provincia,Sector,Municipio,Barrio,Direccion_1,Direccion_2")] Direccion direccion)
+        public ActionResult Edit([Bind(Include = "DireccionID,Provincia,Sector,Municipio,Barrio,Direccion_1,Direccion_2,Pais_PaisID")] Direccion direccion)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +90,7 @@ namespace QR_Project_6.Controllers.Lugares
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.Pais_PaisID = new SelectList(db.Paises, "PaisID", "Nombre_Pais", direccion.Pais_PaisID);
             return View(direccion);
         }
 

@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.QR
+namespace QR_Project_6.Controllers
 {
     public class QuejasController : Controller
     {
@@ -17,7 +17,8 @@ namespace QR_Project_6.Controllers.QR
         // GET: Quejas
         public ActionResult Index()
         {
-            return View(db.Quejas.ToList());
+            var quejas = db.Quejas.Include(q => q.Cliente).Include(q => q.Departamento).Include(q => q.Empleado).Include(q => q.Estado_QR).Include(q => q.Sucursal).Include(q => q.Tipo_Queja);
+            return View(quejas.ToList());
         }
 
         // GET: Quejas/Details/5
@@ -38,6 +39,12 @@ namespace QR_Project_6.Controllers.QR
         // GET: Quejas/Create
         public ActionResult Create()
         {
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion");
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion");
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre");
+            ViewBag.Tipo_Queja_TipoID = new SelectList(db.Tipo_Quejas, "TipoID", "Descripcion");
             return View();
         }
 
@@ -46,7 +53,7 @@ namespace QR_Project_6.Controllers.QR
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "QRID,UserNameID,Fecha,Comentario")] Queja queja)
+        public ActionResult Create([Bind(Include = "QRID,Tipo_Queja_TipoID,UserNameID,Fecha,Comentario,Cliente_ClienteID,Departamento_DepartamentoID,Empleado_EmpleadoID,Estado_QR_EstadoID,Sucursal_SucursalID")] Queja queja)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +62,12 @@ namespace QR_Project_6.Controllers.QR
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion", queja.Cliente_ClienteID);
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", queja.Departamento_DepartamentoID);
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion", queja.Empleado_EmpleadoID);
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", queja.Estado_QR_EstadoID);
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre", queja.Sucursal_SucursalID);
+            ViewBag.Tipo_Queja_TipoID = new SelectList(db.Tipo_Quejas, "TipoID", "Descripcion", queja.Tipo_Queja_TipoID);
             return View(queja);
         }
 
@@ -70,6 +83,12 @@ namespace QR_Project_6.Controllers.QR
             {
                 return HttpNotFound();
             }
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion", queja.Cliente_ClienteID);
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", queja.Departamento_DepartamentoID);
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion", queja.Empleado_EmpleadoID);
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", queja.Estado_QR_EstadoID);
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre", queja.Sucursal_SucursalID);
+            ViewBag.Tipo_Queja_TipoID = new SelectList(db.Tipo_Quejas, "TipoID", "Descripcion", queja.Tipo_Queja_TipoID);
             return View(queja);
         }
 
@@ -78,7 +97,7 @@ namespace QR_Project_6.Controllers.QR
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "QRID,UserNameID,Fecha,Comentario")] Queja queja)
+        public ActionResult Edit([Bind(Include = "QRID,Tipo_Queja_TipoID,UserNameID,Fecha,Comentario,Cliente_ClienteID,Departamento_DepartamentoID,Empleado_EmpleadoID,Estado_QR_EstadoID,Sucursal_SucursalID")] Queja queja)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +105,12 @@ namespace QR_Project_6.Controllers.QR
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion", queja.Cliente_ClienteID);
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", queja.Departamento_DepartamentoID);
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion", queja.Empleado_EmpleadoID);
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", queja.Estado_QR_EstadoID);
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre", queja.Sucursal_SucursalID);
+            ViewBag.Tipo_Queja_TipoID = new SelectList(db.Tipo_Quejas, "TipoID", "Descripcion", queja.Tipo_Queja_TipoID);
             return View(queja);
         }
 

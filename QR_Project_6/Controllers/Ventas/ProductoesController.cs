@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Models;
 
-namespace QR_Project_6.Controllers.Ventas
+namespace QR_Project_6.Controllers
 {
     public class ProductoesController : Controller
     {
@@ -17,7 +17,8 @@ namespace QR_Project_6.Controllers.Ventas
         // GET: Productoes
         public ActionResult Index()
         {
-            return View(db.Productos.ToList());
+            var productos = db.Productos.Include(p => p.Tipo_Producto);
+            return View(productos.ToList());
         }
 
         // GET: Productoes/Details/5
@@ -38,6 +39,7 @@ namespace QR_Project_6.Controllers.Ventas
         // GET: Productoes/Create
         public ActionResult Create()
         {
+            ViewBag.Tipo_Producto_TipoID = new SelectList(db.Tipo_Productos, "TipoID", "Descripcion");
             return View();
         }
 
@@ -46,7 +48,7 @@ namespace QR_Project_6.Controllers.Ventas
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductoID,Nombre,Monto")] Producto producto)
+        public ActionResult Create([Bind(Include = "ProductoID,Nombre,Monto,Tipo_Producto_TipoID")] Producto producto)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +57,7 @@ namespace QR_Project_6.Controllers.Ventas
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Tipo_Producto_TipoID = new SelectList(db.Tipo_Productos, "TipoID", "Descripcion", producto.Tipo_Producto_TipoID);
             return View(producto);
         }
 
@@ -70,6 +73,7 @@ namespace QR_Project_6.Controllers.Ventas
             {
                 return HttpNotFound();
             }
+            ViewBag.Tipo_Producto_TipoID = new SelectList(db.Tipo_Productos, "TipoID", "Descripcion", producto.Tipo_Producto_TipoID);
             return View(producto);
         }
 
@@ -78,7 +82,7 @@ namespace QR_Project_6.Controllers.Ventas
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductoID,Nombre,Monto")] Producto producto)
+        public ActionResult Edit([Bind(Include = "ProductoID,Nombre,Monto,Tipo_Producto_TipoID")] Producto producto)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +90,7 @@ namespace QR_Project_6.Controllers.Ventas
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.Tipo_Producto_TipoID = new SelectList(db.Tipo_Productos, "TipoID", "Descripcion", producto.Tipo_Producto_TipoID);
             return View(producto);
         }
 
