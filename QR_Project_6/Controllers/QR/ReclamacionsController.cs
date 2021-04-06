@@ -6,7 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using QR_Project_6.Models;
+using QR_Project_6.Models.Cuentas;
+using QR_Project_6.Models.Estados;
 
 namespace QR_Project_6.Controllers
 {
@@ -17,9 +20,57 @@ namespace QR_Project_6.Controllers
         // GET: Reclamacions
         public ActionResult Index()
         {
-            var reclamacions = db.Reclamacions.Include(r => r.Cliente).Include(r => r.Departamento).Include(r => r.Empleado).Include(r => r.Estado_QR).Include(r => r.Sucursal).Include(r => r.Tipo_Reclamacion);
-            return View(reclamacions.ToList());
+            List<Reclamacion> reclamaciones = new List<Reclamacion>();
+            if (User.IsInRole(Roles.Admin))
+            {
+                AddReclamacionesAdmin(reclamaciones);
+                return View(reclamaciones);
+            }
+            if (User.IsInRole(Roles.Empleado))
+            {
+                //TODO: Ordenar por estado y prioridad
+                AddReclamacionesEmpleado(reclamaciones);
+                return View(reclamaciones);
+            }
+            if (User.IsInRole(Roles.Cliente))
+            {
+                AddReclamacionesCliente(reclamaciones);
+                return View(reclamaciones);
+            }
+            return View(reclamaciones);
         }
+
+        private void AddReclamacionesCliente(List<Reclamacion> reclamaciones)
+        {
+            string id = User.Identity.GetUserId();
+            var Cliente = db.Clientes.Where(c => c.UserNameID == id).First<Cliente>();
+            var reclamacions = db.Reclamacions.Where(q => q.Cliente_ClienteID == Cliente.PersonaID);
+            reclamaciones.AddRange(reclamacions.ToList<Reclamacion>());
+        }
+
+        private void AddReclamacionesAdmin(List<Reclamacion> reclamaciones)
+        {
+            var reclamacions = db.Reclamacions.Include(r => r.Cliente).Include(r => r.Departamento).Include(r => r.Empleado).Include(r => r.Estado_QR).Include(r => r.Sucursal).Include(r => r.Tipo_Reclamacion);
+            reclamaciones.AddRange(reclamacions.ToList<Reclamacion>());
+        }
+
+        private void AddReclamacionesEmpleado(List<Reclamacion> reclamaciones)
+        {
+            string id = User.Identity.GetUserId();
+            var Empleado = db.Empleados.Where(e => e.UserNameID == id).First<Empleado>();
+            var Departamento_Representante = db.Departamentos.Where(d => d.Empleado_PersonaID == Empleado.PersonaID);
+            var reclamacions = db.Reclamacions.Where(
+                q => q.Empleado_EmpleadoID == Empleado.PersonaID
+                || (q.Empleado == null && q.Departamento_DepartamentoID == Empleado.Departamento_DepartamentoID && q.Sucursal_SucursalID == Empleado.Sucursal_SucursalID)
+                || (q.Empleado == null && q.Departamento_DepartamentoID == null && q.Sucursal_SucursalID == Empleado.Sucursal_SucursalID)
+                || (q.Empleado == null && q.Departamento_DepartamentoID == null && q.Sucursal_SucursalID == null)
+                || (q.Empleado == null && q.Departamento_DepartamentoID == Empleado.Departamento_DepartamentoID && q.Sucursal_SucursalID == null)
+                || q.UserNameID == Empleado.UserNameID
+                || Departamento_Representante.Contains(q.Departamento));
+            reclamaciones.AddRange(reclamacions.ToList<Reclamacion>());
+        }
+
+
 
         // GET: Reclamacions/Details/5
         public ActionResult Details(int? id)
@@ -39,13 +90,66 @@ namespace QR_Project_6.Controllers
         // GET: Reclamacions/Create
         public ActionResult Create()
         {
+            if (User.IsInRole(Roles.Admin))
+            {
+                AddCreateViewBagAdmin();
+                return View();
+            }
+            if (User.IsInRole(Roles.Empleado))
+            {
+                AddCreateViewBagEmpleado();
+                return View();
+            }
+            if (User.IsInRole(Roles.Cliente))
+            {
+                AddCreateViewBagCliente();
+                return View();
+            }
+
+            AddCreateViewBagDefault();
+            return View();
+        }
+
+        private void AddCreateViewBagDefault()
+        {
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion");
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre");
+            ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion");
+        }
+
+        private void AddCreateViewBagCliente()
+        {
+            string id = User.Identity.GetUserId();
+            ViewBag.UserNameID = id;
+            ViewBag.Cliente_ClienteID = db.Clientes.Where(c => c.UserNameID == id).FirstOrDefault<Cliente>().PersonaID;
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
+            ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion");
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre");
+            ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion");
+        }
+
+        private void AddCreateViewBagEmpleado()
+        {
+            ViewBag.UserNameID = User.Identity.GetUserId();
+            ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion");
+            ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
+            ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
+            ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre");
+            ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion");
+        }
+
+        private void AddCreateViewBagAdmin()
+        {
+            ViewBag.UserNameID = User.Identity.GetUserId();
             ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion");
             ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
             ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion");
             ViewBag.Estado_QR_EstadoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion");
             ViewBag.Sucursal_SucursalID = new SelectList(db.Sucursals, "SucursalID", "Nombre");
             ViewBag.Tipo_Reclamacion_TipoID = new SelectList(db.Tipo_Reclamacions, "TipoID", "Descripcion");
-            return View();
         }
 
         // POST: Reclamacions/Create
@@ -57,11 +161,19 @@ namespace QR_Project_6.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!User.IsInRole(Roles.Admin))
+                {
+                    Estado_QR_Helper estado_helper = new Estado_QR_Helper();
+                    reclamacion.Estado_QR_EstadoID = estado_helper.GetEstadoByDescripcion(Estado_QR_Helper.ABIERTO).EstadoID;
+                }
+
+                reclamacion.Fecha = DateTime.Now;
                 db.Reclamacions.Add(reclamacion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.UserNameID = User.Identity.GetUserId();
             ViewBag.Cliente_ClienteID = new SelectList(db.Clientes, "PersonaID", "Identificacion", reclamacion.Cliente_ClienteID);
             ViewBag.Departamento_DepartamentoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", reclamacion.Departamento_DepartamentoID);
             ViewBag.Empleado_EmpleadoID = new SelectList(db.Empleados, "PersonaID", "Identificacion", reclamacion.Empleado_EmpleadoID);

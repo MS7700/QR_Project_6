@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -55,7 +54,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PersonaID,Departamento_DepartamentoID,Sucursal_SucursalID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Empleado empleado)
+        public ActionResult Create([Bind(Include = "PersonaID,Departamento_DepartamentoID,Sucursal_SucursalID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Email,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Empleado empleado)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +96,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PersonaID,Departamento_DepartamentoID,Sucursal_SucursalID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Empleado empleado)
+        public ActionResult Edit([Bind(Include = "PersonaID,Departamento_DepartamentoID,Sucursal_SucursalID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Email,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Empleado empleado)
         {
             if (ModelState.IsValid)
             {
@@ -131,23 +130,22 @@ namespace QR_Project_6.Controllers
         // POST: Empleadoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public async System.Threading.Tasks.Task<ActionResult> DeleteConfirmedAsync(int id)
         {
             ApplicationDbContext context = new ApplicationDbContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-
             Empleado empleado = db.Empleados.Find(id);
 
-            var user = await UserManager.FindByEmailAsync(empleado.UserNameID);
+            var user = await UserManager.FindByIdAsync(empleado.UserNameID);
             var roles = await UserManager.GetRolesAsync(user.Id);
             foreach (var role in roles.ToList())
             {
                 var r = await UserManager.RemoveFromRoleAsync(user.Id, role);
             }
             var rc = await UserManager.DeleteAsync(user);
-
+            
             db.Empleados.Remove(empleado);
             db.SaveChanges();
             return RedirectToAction("Index");

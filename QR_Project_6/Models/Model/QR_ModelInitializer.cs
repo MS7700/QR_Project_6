@@ -8,7 +8,7 @@ using System.Web;
 
 namespace QR_Project_6.Models
 {
-    public class QR_ModelInitializer : DropCreateDatabaseAlways<QR_Model>
+    public class QR_ModelInitializer : DropCreateDatabaseIfModelChanges<QR_Model>
     {
         
         protected override void Seed(QR_Model context)
@@ -76,6 +76,7 @@ namespace QR_Project_6.Models
                         Fecha_Ingreso = new DateTime(2020,8,15),
                         Telefono = "8297441345",
                         UserNameID = admin.Id,
+                        Email = admin.Email,
                         Direccion = direccion,
                         Estado_Cliente = estado,
                         Tipo_Identificacion = tipo,

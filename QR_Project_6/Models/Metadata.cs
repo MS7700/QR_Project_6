@@ -43,6 +43,8 @@ namespace QR_Project_6.Models
         [Display(Name = "Teléfono")]
         public string Telefono { get; set; }
         [Display(Name = "Email")]
+        public string Email { get; set; }
+        [Display(Name = "ID Usuario")]
         public string UserNameID { get; set; }
 
         [Display(Name = "Dirección")]

@@ -201,6 +201,7 @@ namespace QR_Project_6.Controllers
                 {
                     var r = UserManager.AddToRole(user.Id, "Empleado");
                     model.EmpleadoVM.Empleado.UserNameID = user.Id;
+                    model.EmpleadoVM.Empleado.Email = user.Email;
 
                     Direccion direccion = db.Direccions.Add(model.EmpleadoVM.Direccion);
                     db.SaveChanges();
@@ -268,6 +269,7 @@ namespace QR_Project_6.Controllers
                 {
                     var r = UserManager.AddToRole(user.Id, "Cliente");
                     model.ClienteVM.Cliente.UserNameID = user.Id;
+                    model.ClienteVM.Cliente.Email = user.Email;
 
                     Direccion direccion = db.Direccions.Add(model.ClienteVM.Direccion);
                     db.SaveChanges();

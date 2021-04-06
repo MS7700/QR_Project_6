@@ -45,7 +45,7 @@
             <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserNameID)
+            @Html.DisplayNameFor(model => model.Email)
             <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
         </th>
         <th></th>
@@ -80,6 +80,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UserNameID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
             <div class="btn-group-vertical">

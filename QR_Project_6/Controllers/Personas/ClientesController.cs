@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -53,7 +52,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Cliente cliente)
+        public ActionResult Create([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Email,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +90,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Cliente cliente)
+        public ActionResult Edit([Bind(Include = "PersonaID,Identificacion,Nombre,Apellido,Fecha_Ingreso,Telefono,UserNameID,Email,Direccion_DireccionID,Estado_Cliente_Estado_ClienteID,Tipo_Identificacion_Tipo_IdentificacionID")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +122,7 @@ namespace QR_Project_6.Controllers
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public async System.Threading.Tasks.Task<ActionResult> DeleteConfirmedAsync(int id)
         {
             ApplicationDbContext context = new ApplicationDbContext();
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
@@ -131,7 +130,7 @@ namespace QR_Project_6.Controllers
 
             Cliente cliente = db.Clientes.Find(id);
 
-            var user = await UserManager.FindByEmailAsync(cliente.UserNameID);
+            var user = await UserManager.FindByIdAsync(cliente.UserNameID);
             var roles = await UserManager.GetRolesAsync(user.Id);
             foreach (var role in roles.ToList())
             {
@@ -139,6 +138,7 @@ namespace QR_Project_6.Controllers
             }
             var rc = await UserManager.DeleteAsync(user);
 
+            
             db.Clientes.Remove(cliente);
             db.SaveChanges();
             return RedirectToAction("Index");

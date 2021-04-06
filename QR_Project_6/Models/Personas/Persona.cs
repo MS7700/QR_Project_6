@@ -37,6 +37,7 @@ namespace QR_Project_6.Models
         public Nullable<System.DateTime> Fecha_Ingreso { get; set; }
         public string Telefono { get; set; }
         public string UserNameID { get; set; }
+        public string Email { get; set; }
         public Nullable<int> Direccion_DireccionID { get; set; }
         public virtual Direccion Direccion { get; set; }
         public Nullable<int> Estado_Cliente_Estado_ClienteID { get; set; }
