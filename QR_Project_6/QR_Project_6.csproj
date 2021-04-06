@@ -508,6 +508,20 @@
     <Content Include="Views\Reclamacions\_ReclamacionAdmin.cshtml" />
     <Content Include="Views\Reclamacions\_ReclamacionCliente.cshtml" />
     <Content Include="Views\Reclamacions\_ReclamacionEmpleado.cshtml" />
+    <Content Include="Views\Respuesta_Cliente\CreateFromQueja.cshtml" />
+    <Content Include="Views\Respuesta_Cliente\CreateFromReclamacion.cshtml" />
+    <Content Include="Views\Respuesta_Cliente\_DetailsReclamacion.cshtml" />
+    <Content Include="Views\Respuesta_Cliente\_DetailsQueja.cshtml" />
+    <Content Include="Views\Respuesta_Cliente\_DetailsRespuestaCliente.cshtml" />
+    <Content Include="Views\Respuesta_Cliente\_DetailsRespuestaEmpleado.cshtml" />
+    <Content Include="Views\Respuesta_Cliente\_ListRespuestas.cshtml" />
+    <Content Include="Views\Respuesta_Empleado\CreateFromQueja.cshtml" />
+    <Content Include="Views\Respuesta_Empleado\CreateFromReclamacion.cshtml" />
+    <Content Include="Views\Respuesta_Empleado\_DetailsQueja.cshtml" />
+    <Content Include="Views\Respuesta_Empleado\_DetailsReclamacion.cshtml" />
+    <Content Include="Views\Respuesta_Empleado\_DetailsRespuestaCliente.cshtml" />
+    <Content Include="Views\Respuesta_Empleado\_DetailsRespuestaEmpleado.cshtml" />
+    <Content Include="Views\Respuesta_Empleado\_ListRespuestas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

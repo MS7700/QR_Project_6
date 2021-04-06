@@ -1,7 +1,9 @@
 ﻿@model QR_Project_6.Models.Queja
+@using QR_Project_6.Models.Estados
 
 @{
     ViewBag.Title = "Details";
+    Estado_QR_Helper estado_QR_Helper = new Estado_QR_Helper();
 }
 
 <h2>Detalles</h2>
@@ -85,6 +87,15 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.QRID }, new { @class="btn btn-primary"})
-    @Html.ActionLink("Volver", "Index",null,new { @class= "btn btn-default" })
+    @if (User.IsInRole("Empleado"))
+    {
+
+        @Html.ActionLink("Responder", "CreateFromQueja", "Respuesta_Empleado", new { id = Model.QRID }, new { @class = "btn btn-primary" })
+    }
+    else if (User.IsInRole("Cliente") && estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.PENDIENTE_VALORACION).EstadoID == Model.Estado_QR_EstadoID)
+    {
+        @Html.ActionLink("Responder", "CreateFromQueja", "Respuesta_Cliente", new { id = Model.QRID }, new { @class = "btn btn-primary" })
+    }
+    @Html.ActionLink("Editar", "Edit", new { id = Model.QRID }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-default" })
 </p>

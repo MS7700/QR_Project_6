@@ -6,7 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using QR_Project_6.Extensions;
 using QR_Project_6.Models;
+using QR_Project_6.Models.Estados;
 
 namespace QR_Project_6.Controllers
 {
@@ -78,6 +81,278 @@ namespace QR_Project_6.Controllers
             ViewBag.Sucursal_Sucursal_OrigenID = new SelectList(db.Sucursals, "SucursalID", "Nombre", respuesta_Empleado.Sucursal_Sucursal_OrigenID);
             return View(respuesta_Empleado);
         }
+
+        // GET: Respuesta_Empleado/Create
+        public ActionResult CreateFromQueja(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Queja queja = db.Quejas.Find(id);
+            if (queja == null)
+            {
+                return HttpNotFound();
+            }
+            RespuestaEmpleadoQuejaViewModel viewmodel = InitializeREQViewModel(queja);
+
+            int? id_queja = queja.QRID;
+
+            AddListRespuestasQueja(viewmodel, id_queja);
+
+            Respuesta_Empleado respuesta_Empleado = viewmodel.Respuesta_Empleado;
+
+            AddViewBagCreate(respuesta_Empleado);
+
+            return View(viewmodel);
+        }
+
+        private void AddViewBagCreate(Respuesta_Empleado respuesta_Empleado)
+        {
+            
+            
+            ViewBag.ID_Departamento_Destino = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", respuesta_Empleado.Departamento_Departamento_OrigenID);
+            ViewBag.ID_Empleado_Destino = new SelectList(db.Empleados, "PersonaID", "Identificacion", respuesta_Empleado.Empleado_Empleado_OrigenID);
+            ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", respuesta_Empleado.Estado_QR_Estado_OrigenID);
+            ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursals, "SucursalID", "Nombre", respuesta_Empleado.Sucursal_Sucursal_OrigenID);
+        }
+
+        private void AddListRespuestasQueja(RespuestaEmpleadoQuejaViewModel viewmodel, int? id_queja)
+        {
+            List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Queja_QuejaID == id_queja).ToList();
+            List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Queja_QuejaID == id_queja).ToList();
+            viewmodel.QuejaViewModel.Respuestas.AddRange(respuesta_Clientes);
+            viewmodel.QuejaViewModel.Respuestas.AddRange(respuesta_Empleados);
+            viewmodel.QuejaViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
+        }
+
+        private static RespuestaEmpleadoQuejaViewModel InitializeREQViewModel(Queja queja)
+        {
+            return new RespuestaEmpleadoQuejaViewModel()
+            {
+                QuejaViewModel = new QuejaViewModel
+                {
+                    Queja = queja,
+                    Respuestas = new List<Respuesta>()
+                },
+                Respuesta_Empleado = new Respuesta_Empleado
+                {
+                    Queja_QuejaID = queja.QRID,
+                    Departamento_Departamento_OrigenID = queja.Departamento_DepartamentoID,
+                    Empleado_Empleado_OrigenID = queja.Empleado_EmpleadoID,
+                    Sucursal_Sucursal_OrigenID = queja.Sucursal_SucursalID,
+                    Estado_QR_Estado_OrigenID = queja.Estado_QR_EstadoID
+                }
+            };
+        }
+
+        private int? CheckNull(int? destino, int? origen)
+        {
+            return destino == null ? origen : destino;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateFromQueja(RespuestaEmpleadoQuejaViewModel viewModel)
+        {
+            string id = User.Identity.GetUserId();
+            Empleado empleado = db.Empleados.Where(e => e.UserNameID == id).FirstOrDefault<Empleado>();
+            Respuesta_Empleado respuesta_Empleado = viewModel.Respuesta_Empleado;
+            Queja queja = db.Quejas.Find(viewModel.QuejaViewModel.Queja.QRID);
+
+            if (ModelState.IsValid)
+            {
+                respuesta_Empleado.Queja_QuejaID = queja.QRID;
+                respuesta_Empleado.Fecha = DateTime.Now;
+                AddParametrosDestinoPorEstado(empleado, respuesta_Empleado);
+
+
+                respuesta_Empleado.Empleado_Empleado_OrigenID = empleado.PersonaID;
+                queja.Estado_QR_EstadoID = respuesta_Empleado.Estado_QR_Estado_DestinoID;
+                queja.Sucursal_SucursalID = respuesta_Empleado.Sucursal_Sucursal_DestinoID;
+                queja.Departamento_DepartamentoID = respuesta_Empleado.Departamento_Departamento_DestinoID;
+                queja.Empleado_EmpleadoID = respuesta_Empleado.Empleado_Empleado_DestinoID;
+                db.Respuesta_Empleados.Add(respuesta_Empleado);
+                db.Entry(queja).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Quejas");
+            }
+
+            AddViewBagPostCreate(respuesta_Empleado);
+            return View(viewModel);
+        }
+
+        private void AddViewBagPostCreate(Respuesta_Empleado respuesta_Empleado)
+        {
+            ViewBag.ID_Departamento_Destino = new SelectList(db.Departamentos, "DepartamentoID", "Nombre", respuesta_Empleado.Departamento_Departamento_DestinoID);
+            ViewBag.ID_Empleado_Destino = new SelectList(db.Empleados, "PersonaID", "Identificacion", respuesta_Empleado.Empleado_Empleado_DestinoID);
+            ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", respuesta_Empleado.Estado_QR_Estado_DestinoID);
+            ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursals, "SucursalID", "Nombre", respuesta_Empleado.Sucursal_Sucursal_DestinoID);
+        }
+
+        private void AddParametrosDestinoPorEstado(Empleado empleado, Respuesta_Empleado respuesta_Empleado)
+        {
+            Estado_QR_Helper estado_QR_Helper = new Estado_QR_Helper();
+            if (respuesta_Empleado.Estado_QR_Estado_DestinoID == estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.PENDIENTE_VALORACION).EstadoID)
+            {
+                respuesta_Empleado.Empleado_Empleado_DestinoID = empleado.PersonaID;
+                respuesta_Empleado.Departamento_Departamento_DestinoID = empleado.Departamento_DepartamentoID;
+                respuesta_Empleado.Sucursal_Sucursal_DestinoID = empleado.Sucursal_SucursalID;
+            }
+            if (respuesta_Empleado.Estado_QR_Estado_DestinoID == estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.REDIRIGIDO_DEPARTAMENTO).EstadoID)
+            {
+                respuesta_Empleado.Sucursal_Sucursal_DestinoID = empleado.Sucursal_SucursalID;
+                respuesta_Empleado.Empleado_Empleado_DestinoID = null;
+            }
+            if (respuesta_Empleado.Estado_QR_Estado_DestinoID == estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.REDIRIGIDO_SUCURSAL).EstadoID)
+            {
+                respuesta_Empleado.Departamento_Departamento_DestinoID = CheckNull(respuesta_Empleado.Departamento_Departamento_DestinoID, respuesta_Empleado.Departamento_Departamento_OrigenID);
+                respuesta_Empleado.Empleado_Empleado_DestinoID = null;
+            }
+            if (respuesta_Empleado.Estado_QR_Estado_DestinoID == estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.REDIRIGIDO_EMPLEADO).EstadoID)
+            {
+                Empleado empleado_Destino = db.Empleados.Find(respuesta_Empleado.Empleado_Empleado_DestinoID);
+                respuesta_Empleado.Departamento_Departamento_DestinoID = empleado_Destino.Departamento_DepartamentoID;
+                respuesta_Empleado.Sucursal_Sucursal_DestinoID = empleado_Destino.Sucursal_SucursalID;
+            }
+            if (respuesta_Empleado.Estado_QR_Estado_DestinoID == estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.CERRADO).EstadoID)
+            {
+                respuesta_Empleado.Empleado_Empleado_DestinoID = empleado.PersonaID;
+                respuesta_Empleado.Departamento_Departamento_DestinoID = empleado.Departamento_DepartamentoID;
+                respuesta_Empleado.Sucursal_Sucursal_DestinoID = empleado.Sucursal_SucursalID;
+            }
+        }
+
+
+        public ActionResult CreateFromReclamacion(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Reclamacion reclamacion = db.Reclamacions.Find(id);
+            if (reclamacion == null)
+            {
+                return HttpNotFound();
+            }
+            RespuestaEmpleadoReclamacionViewModel viewmodel = InitializeRERViewModel(reclamacion);
+            AddListRespuestasReclamacion(reclamacion, viewmodel);
+            Respuesta_Empleado respuesta_Empleado = viewmodel.Respuesta_Empleado;
+
+            //List<Estado_QR> disabled = new List<Estado_QR>();
+            //disabled.Add(db.Estado_QR.Find(Estado_QR.GetIdByDescripcion(Estado_QR.REABIERTO_DISCONFORMIDAD)));
+            //disabled.Add(db.Estado_QR.Find(Estado_QR.GetIdByDescripcion(Estado_QR.ABIERTO)));
+
+            AddViewBagCreate(respuesta_Empleado);
+
+            //SelectList listItems = new SelectList(db.Estado_QR, "ID_Estado_QR", "Descripcion", respuesta_Empleado.ID_Estado_Origen);
+            //ViewBag.ID_Departamento_Destino = new SelectList(db.Departamento, "ID_Departamento", "Nombre", respuesta_Empleado.ID_Departamento_Origen);
+            //ViewBag.ID_Empleado_Destino = new SelectList(db.Empleado, "ID_Empleado", "Identificacion", respuesta_Empleado.ID_Empleado_Origen);
+            //ViewBag.ID_Estado_Destino = listItems;
+            //ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursal, "ID_Sucursal", "Nombre", respuesta_Empleado.ID_Sucursal_Origen);
+
+            //ViewBag.ID_Departamento_Destino = new SelectList(db.Departamento, "ID_Departamento", "Nombre",);
+            //ViewBag.ID_Empleado_Destino = new SelectList(db.Empleado, "ID_Empleado", "Identificacion");
+            //ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QR, "ID_Estado_QR", "Descripcion");
+            //ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursal, "ID_Sucursal", "Nombre");
+            return View(viewmodel);
+        }
+
+        private static RespuestaEmpleadoReclamacionViewModel InitializeRERViewModel(Reclamacion reclamacion)
+        {
+            return new RespuestaEmpleadoReclamacionViewModel()
+            {
+                ReclamacionViewModel = new ReclamacionViewModel
+                {
+                    Reclamacion = reclamacion,
+                    Respuestas = new List<Respuesta>()
+                },
+                Respuesta_Empleado = new Respuesta_Empleado
+                {
+                    Reclamacion_ReclamacionID = reclamacion.QRID,
+                    Departamento_Departamento_OrigenID = reclamacion.Departamento_DepartamentoID,
+                    Empleado_Empleado_OrigenID = reclamacion.Empleado_EmpleadoID,
+                    Sucursal_Sucursal_OrigenID = reclamacion.Sucursal_SucursalID,
+                    Estado_QR_Estado_OrigenID = reclamacion.Estado_QR_EstadoID
+                }
+            };
+        }
+
+        private void AddListRespuestasReclamacion(Reclamacion reclamacion, RespuestaEmpleadoReclamacionViewModel viewmodel)
+        {
+            int? id_reclamacion = reclamacion.QRID;
+            List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
+            List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
+            viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Clientes);
+            viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Empleados);
+            viewmodel.ReclamacionViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateFromReclamacion(RespuestaEmpleadoReclamacionViewModel viewModel)
+        {
+            string id = User.Identity.GetUserId();
+            Empleado empleado = db.Empleados.Where(e => e.UserNameID == id).FirstOrDefault<Empleado>();
+            Respuesta_Empleado respuesta_Empleado = viewModel.Respuesta_Empleado;
+            Reclamacion reclamacion = db.Reclamacions.Find(viewModel.ReclamacionViewModel.Reclamacion.QRID);
+
+            if (ModelState.IsValid)
+            {
+                respuesta_Empleado.Reclamacion_ReclamacionID = reclamacion.QRID;
+                respuesta_Empleado.Fecha = DateTime.Now;
+
+                AddParametrosDestinoPorEstado(empleado, respuesta_Empleado);
+
+                //if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.PENDIENTE_VALORACION))
+                //{
+                //    respuesta_Empleado.ID_Empleado_Destino = empleado.ID_Empleado;
+                //    respuesta_Empleado.ID_Departamento_Destino = empleado.ID_Departamento;
+                //    respuesta_Empleado.ID_Sucursal_Destino = empleado.Id_Sucursal;
+                //}
+                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.REDIRIGIDO_DEPARTAMENTO))
+                //{
+                //    respuesta_Empleado.ID_Sucursal_Destino = empleado.Id_Sucursal;
+                //    respuesta_Empleado.ID_Empleado_Destino = null;
+                //}
+                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.REDIRIGIDO_SUCURSAL))
+                //{
+                //    respuesta_Empleado.ID_Departamento_Destino = CheckNull(respuesta_Empleado.ID_Departamento_Destino, respuesta_Empleado.ID_Departamento_Destino);
+                //    respuesta_Empleado.ID_Empleado_Destino = null;
+                //}
+                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.REDIRIGIDO_EMPLEADO))
+                //{
+                //    Empleado empleado_Destino = db.Empleado.Find(respuesta_Empleado.ID_Empleado_Destino);
+                //    respuesta_Empleado.ID_Departamento_Destino = empleado_Destino.ID_Departamento;
+                //    respuesta_Empleado.ID_Sucursal_Destino = empleado_Destino.Id_Sucursal;
+                //}
+                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.CERRADO))
+                //{
+                //    respuesta_Empleado.ID_Empleado_Destino = empleado.ID_Empleado;
+                //    respuesta_Empleado.ID_Departamento_Destino = empleado.ID_Departamento;
+                //    respuesta_Empleado.ID_Sucursal_Destino = empleado.Id_Sucursal;
+                //}
+
+
+                respuesta_Empleado.Empleado_Empleado_OrigenID = empleado.PersonaID;
+                reclamacion.Estado_QR_EstadoID = respuesta_Empleado.Estado_QR_Estado_DestinoID;
+                reclamacion.Sucursal_SucursalID = respuesta_Empleado.Sucursal_Sucursal_DestinoID;
+                reclamacion.Departamento_DepartamentoID = respuesta_Empleado.Departamento_Departamento_DestinoID;
+                reclamacion.Empleado_EmpleadoID = respuesta_Empleado.Empleado_Empleado_DestinoID;
+                db.Respuesta_Empleados.Add(respuesta_Empleado);
+                db.Entry(reclamacion).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Reclamacions");
+            }
+
+            AddViewBagPostCreate(respuesta_Empleado);
+            //ViewBag.ID_Departamento_Destino = new SelectList(db.Departamento, "ID_Departamento", "Nombre", respuesta_Empleado.ID_Departamento_Destino);
+            //ViewBag.ID_Empleado_Destino = new SelectList(db.Empleado, "ID_Empleado", "Identificacion", respuesta_Empleado.ID_Empleado_Destino);
+            //ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QR, "ID_Estado_QR", "Descripcion", respuesta_Empleado.ID_Estado_Destino);
+            //ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursal, "ID_Sucursal", "Nombre", respuesta_Empleado.ID_Sucursal_Destino);
+            return View(viewModel);
+        }
+
 
         // GET: Respuesta_Empleado/Edit/5
         public ActionResult Edit(int? id)

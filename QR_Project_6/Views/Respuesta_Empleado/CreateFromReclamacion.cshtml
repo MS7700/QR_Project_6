@@ -1,0 +1,144 @@
+﻿@model QR_Project_6.Models.RespuestaEmpleadoReclamacionViewModel
+@using QR_Project_6.Models.Estados
+@{
+    ViewBag.Title = "CreateFromReclamacion";
+    Estado_QR_Helper estado_QR_Helper = new Estado_QR_Helper();
+}
+
+<h2>CreateFromQueja</h2>
+
+@Html.Partial("_DetailsReclamacion", Model.ReclamacionViewModel)
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+    @Html.HiddenFor(model => model.ReclamacionViewModel.Reclamacion.QRID)
+    @Html.HiddenFor(model => model.Respuesta_Empleado.Sucursal_Sucursal_OrigenID)
+    @Html.HiddenFor(model => model.Respuesta_Empleado.Estado_QR_Estado_OrigenID)
+    @Html.HiddenFor(model => model.Respuesta_Empleado.Departamento_Departamento_OrigenID)
+    @Html.HiddenFor(model => model.Respuesta_Empleado.Empleado_Empleado_OrigenID)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Respuesta_Empleado.Estado_QR_Estado_DestinoID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Respuesta_Empleado.Estado_QR_Estado_DestinoID, (SelectList)ViewBag.ID_Estado_Destino, null, new { @class = "form-control", onChange = "onSelect(this.value)" })
+            @*@Html.DropDownList("ID_Estado_Destino", null, htmlAttributes: new { @class = "form-control" })*@
+            @Html.ValidationMessageFor(model => model.Respuesta_Empleado.Estado_QR_Estado_DestinoID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group" id="ID_EMPLEADO_FORM">
+        @Html.LabelFor(model => model.Respuesta_Empleado.Empleado_Empleado_DestinoID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Respuesta_Empleado.Empleado_Empleado_DestinoID, (SelectList)ViewBag.ID_Empleado_Destino, "Seleccione", new { @class = "form-control" })
+            @*@Html.DropDownListFor("ID_Empleado_Destino", null, htmlAttributes: new { @class = "form-control" })*@
+            @Html.ValidationMessageFor(model => model.Respuesta_Empleado.Empleado_Empleado_DestinoID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group" id="ID_DEPARTAMENTO_FORM">
+        @Html.LabelFor(model => model.Respuesta_Empleado.Departamento_Departamento_DestinoID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Respuesta_Empleado.Departamento_Departamento_DestinoID, (SelectList)ViewBag.ID_Departamento_Destino, "Seleccione", new { @class = "form-control" })
+            @* @Html.DropDownList("ID_Departamento_Destino", null, htmlAttributes: new { @class = "form-control" })*@
+            @Html.ValidationMessageFor(model => model.Respuesta_Empleado.Departamento_Departamento_DestinoID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group" id="ID_SUCURSAL_FORM">
+        @Html.LabelFor(model => model.Respuesta_Empleado.Sucursal_Sucursal_DestinoID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Respuesta_Empleado.Sucursal_Sucursal_DestinoID, (SelectList)ViewBag.ID_Sucursal_Destino, "Seleccione", new { @class = "form-control" })
+            @*@Html.DropDownList("ID_Sucursal_Destino", null, htmlAttributes: new { @class = "form-control" })*@
+            @Html.ValidationMessageFor(model => model.Respuesta_Empleado.Sucursal_Sucursal_DestinoID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Respuesta_Empleado.Detalle, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Respuesta_Empleado.Detalle, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Respuesta_Empleado.Detalle, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Agregar" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+
+<script>
+    function disableValues() {
+        var select = document.getElementById("Respuesta_Empleado_Estado_QR_Estado_DestinoID").getElementsByTagName("option");
+
+        for (var i = 0; i < select.length; i++) {
+            if (select[i].value == "@estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.REABIERTO_DISCONFORMIDAD).EstadoID") {
+                select[i].disabled = true;
+                select[i].style.color = "#f7e7e7";
+            } else if (select[i].value == "@estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.ABIERTO).EstadoID") {
+                select[i].disabled = true;
+                select[i].style.color = "#f7e7e7";
+            }
+        }
+    }
+
+    function onLoad() {
+        disableValues();
+        var value = document.getElementById("Respuesta_Empleado_Estado_QR_Estado_DestinoID").value;
+        onSelect(value);
+    }
+
+
+    function onSelect(value) {
+        switch (value) {
+            case "@estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.REDIRIGIDO_DEPARTAMENTO).EstadoID":
+
+                document.getElementById("ID_EMPLEADO_FORM").style.display = "none";
+                document.getElementById("ID_SUCURSAL_FORM").style.display = "none";
+                document.getElementById("ID_DEPARTAMENTO_FORM").style.display = "block";
+
+                break;
+            case "@estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.CERRADO).EstadoID":
+                document.getElementById("ID_EMPLEADO_FORM").style.display = "none";
+                document.getElementById("ID_SUCURSAL_FORM").style.display = "none";
+                document.getElementById("ID_DEPARTAMENTO_FORM").style.display = "none";
+                break;
+            case "@estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.REDIRIGIDO_EMPLEADO).EstadoID":
+
+                document.getElementById("ID_EMPLEADO_FORM").style.display = "block";
+                document.getElementById("ID_SUCURSAL_FORM").style.display = "none";
+                document.getElementById("ID_DEPARTAMENTO_FORM").style.display = "none";
+                break;
+            case "@estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.REDIRIGIDO_SUCURSAL).EstadoID":
+                document.getElementById("ID_EMPLEADO_FORM").style.display = "none";
+                document.getElementById("ID_SUCURSAL_FORM").style.display = "block";
+                document.getElementById("ID_DEPARTAMENTO_FORM").style.display = "block";
+                break;
+            case "@estado_QR_Helper.GetEstadoByDescripcion(Estado_QR_Helper.PENDIENTE_VALORACION).EstadoID":
+                document.getElementById("ID_EMPLEADO_FORM").style.display = "none";
+                document.getElementById("ID_SUCURSAL_FORM").style.display = "none";
+                document.getElementById("ID_DEPARTAMENTO_FORM").style.display = "none";
+                break;
+            default:
+                document.getElementById("ID_EMPLEADO_FORM").style.display = "none";
+                document.getElementById("ID_SUCURSAL_FORM").style.display = "none";
+                document.getElementById("ID_DEPARTAMENTO_FORM").style.display = "none";
+
+       }
+    }
+    window.addEventListener('load', onLoad);
+</script>
