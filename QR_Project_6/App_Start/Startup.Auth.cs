@@ -69,60 +69,58 @@ namespace QR_Project_6
         private void createRolesandUsers()
         {
             ApplicationDbContext context = new ApplicationDbContext();
-            
+
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             // In Startup iam creating first Admin Role and creating a default Admin User     
-            if (!roleManager.RoleExists("Admin"))
-            {
 
-                // first we create Admin rool    
-                var role = new IdentityRole
-                {
-                    Name = "Admin"
-                };
-                roleManager.Create(role);
+            CreateRole(roleManager, "Admin");
 
-                //Here we create a Admin super user who will maintain the website                   
-                string Email = "admin@gmail.com";
-                string Password = "123456";
-                var myUser = UserManager.FindByEmail(Email);
-                if (myUser == null)
-                {
-                    myUser = new ApplicationUser { UserName = Email, Email = Email };
-                    var result = UserManager.Create(myUser, Password);
-                    if (result.Succeeded)
-                    {
-                        var result2 = UserManager.AddToRole(myUser.Id, "Admin");
-                    }
-                }
-                else
-                {
-                    var result2 = UserManager.AddToRole(myUser.Id, "Admin");
-                }
-            }
+            CreateUser(UserManager, "admin@gmail.com", "123456", "Admin");
 
-            // creating Creating Manager role     
-            if (!roleManager.RoleExists("Cliente"))
+            // creating Creating "Cliente" role     
+            CreateRole(roleManager,"Cliente");
+
+            CreateUser(UserManager, "cliente@gmail.com", "123456", "Cliente");
+
+            // creating Creating "Empleado" role
+            CreateRole(roleManager, "Empleado");
+
+            CreateUser(UserManager, "empleado@gmail.com", "123456", "Empleado");
+
+        }
+
+        private static void CreateRole(RoleManager<IdentityRole> roleManager,string rol)
+        {
+            if (!roleManager.RoleExists(rol))
             {
                 var role = new IdentityRole
                 {
-                    Name = "Cliente"
+                    Name = rol
                 };
                 roleManager.Create(role);
 
             }
+        }
 
-            // creating Creating Employee role     
-            if (!roleManager.RoleExists("Empleado"))
+        private static void CreateUser(UserManager<ApplicationUser> UserManager, string email, string password, string role)
+        {
+            string Email = email;
+            string Password = password;
+            var myUser = UserManager.FindByEmail(Email);
+            if (myUser == null)
             {
-                var role = new IdentityRole
+                myUser = new ApplicationUser { UserName = Email, Email = Email };
+                var result = UserManager.Create(myUser, Password);
+                if (result.Succeeded)
                 {
-                    Name = "Empleado"
-                };
-                roleManager.Create(role);
-
+                    var result2 = UserManager.AddToRole(myUser.Id, role);
+                }
+            }
+            else
+            {
+                var result2 = UserManager.AddToRole(myUser.Id, role);
             }
         }
     }

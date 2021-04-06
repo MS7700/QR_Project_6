@@ -30,6 +30,8 @@ namespace QR_Project_6.Models
             context.SaveChanges();
             //context.Empleados.AddRange(empleados());
             empleados(context);
+            clientes(context);
+            productos(context);
             base.Seed(context);
         }
 
@@ -49,7 +51,27 @@ namespace QR_Project_6.Models
                         Direccion_1 = "Calle F",
                         Direccion_2 = "45",
                         Pais = pais
-                    }
+                    },
+                    new Direccion()
+                    {
+                        Provincia = "Distrito Nacional",
+                        Sector = "Villa Consuelo",
+                        Municipio = "Distrito Nacional",
+                        Barrio = "Villa Consuelo",
+                        Direccion_1 = "Calle La Flor",
+                        Direccion_2 = "24",
+                        Pais = pais
+                    },
+                    new Direccion()
+                    {
+                        Provincia = "Santiago de Los Caballeros",
+                        Sector = "Las Palmas",
+                        Municipio = "Santiago",
+                        Barrio = "Los Topos",
+                        Direccion_1 = "Calle J",
+                        Direccion_2 = "53",
+                        Pais = pais
+                    },
                 }
             );
             
@@ -59,11 +81,15 @@ namespace QR_Project_6.Models
         {
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var admin = UserManager.FindByName("admin@gmail.com");
-            Direccion direccion = context.Direccions.Find(1);
+            var empleado = UserManager.FindByName("empleado@gmail.com");
+            Direccion direccion1 = context.Direccions.Find(1);
+            Direccion direccion2 = context.Direccions.Find(2);
             Estado_Cliente estado = context.Estado_Clientes.Where(e => e.Descripcion == "Activo").FirstOrDefault();
             Tipo_Identificacion tipo = context.Tipo_Identificacions.Where(e => e.Descripcion == "Cédula").FirstOrDefault();
-            Sucursal sucursal = context.Sucursals.Where(e => e.Nombre == "Arroyo Hondo").FirstOrDefault();
-            Departamento departamento = context.Departamentos.Where(e => e.Nombre == "Soporte técnico").FirstOrDefault();
+            Sucursal sucursal1 = context.Sucursals.Where(e => e.Nombre == "Arroyo Hondo").FirstOrDefault();
+            Sucursal sucursal2 = context.Sucursals.Where(e => e.Nombre == "Villa Consuelo").FirstOrDefault();
+            Departamento departamento1 = context.Departamentos.Where(e => e.Nombre == "Soporte técnico").FirstOrDefault();
+            Departamento departamento2 = context.Departamentos.Where(e => e.Nombre == "Ventas").FirstOrDefault();
 
             context.Empleados.AddRange(
                 new List<Empleado>()
@@ -77,16 +103,94 @@ namespace QR_Project_6.Models
                         Telefono = "8297441345",
                         UserNameID = admin.Id,
                         Email = admin.Email,
-                        Direccion = direccion,
+                        Direccion = direccion1,
                         Estado_Cliente = estado,
                         Tipo_Identificacion = tipo,
-                        Departamento = departamento,
-                        Sucursal = sucursal
+                        Departamento = departamento1,
+                        Sucursal = sucursal1
+
+                    },
+                    new Empleado()
+                    {
+                        Identificacion = "55544433322",
+                        Nombre = "Benjamín",
+                        Apellido = "Ortiz",
+                        Fecha_Ingreso = new DateTime(2021,3,5),
+                        Telefono = "8091112233",
+                        UserNameID = empleado.Id,
+                        Email = empleado.Email,
+                        Direccion = direccion2,
+                        Estado_Cliente = estado,
+                        Tipo_Identificacion = tipo,
+                        Departamento = departamento2,
+                        Sucursal = sucursal2
 
                     }
                 }
                 );
             
+        }
+
+        private void clientes(QR_Model context)
+        {
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var cliente = UserManager.FindByName("cliente@gmail.com");
+            Direccion direccion1 = context.Direccions.Find(3);
+            Estado_Cliente estado = context.Estado_Clientes.Where(e => e.Descripcion == "Activo").FirstOrDefault();
+            Tipo_Identificacion tipo = context.Tipo_Identificacions.Where(e => e.Descripcion == "Cédula").FirstOrDefault();
+
+            context.Clientes.AddRange(
+                new List<Cliente>()
+                {
+                    new Cliente()
+                    {
+                        Identificacion = "00122233312",
+                        Nombre = "Pedro",
+                        Apellido = "Almánzar",
+                        Fecha_Ingreso = new DateTime(2021,2,22),
+                        Telefono = "8091112233",
+                        UserNameID = cliente.Id,
+                        Email = cliente.Email,
+                        Direccion = direccion1,
+                        Estado_Cliente = estado,
+                        Tipo_Identificacion = tipo,
+                 
+                    }
+                }
+                );
+
+        }
+
+
+        private void productos(QR_Model context)
+        {
+            Tipo_Producto tipoSuculenta = context.Tipo_Productos.Where(p => p.Descripcion == "Suculenta").FirstOrDefault();
+            Tipo_Producto tipoMaceta = context.Tipo_Productos.Where(p => p.Descripcion == "Maceta").FirstOrDefault();
+            Tipo_Producto tipoOrquidea = context.Tipo_Productos.Where(p => p.Descripcion == "Orquídea").FirstOrDefault();
+            context.Productos.AddRange(
+                new List<Producto>()
+                {
+                    new Producto()
+                    {
+                        Nombre = "Aloe Vera",
+                        Monto = 300,
+                        Tipo_Producto = tipoSuculenta
+                    },
+                    new Producto()
+                    {
+                        Nombre = "Maceta pequeña",
+                        Monto = 200,
+                        Tipo_Producto = tipoMaceta
+                    },
+                    new Producto()
+                    {
+                        Nombre = "Orquídea azul",
+                        Monto = 1200,
+                        Tipo_Producto = tipoOrquidea
+                    },
+                }
+            );
+
         }
 
 
@@ -121,9 +225,12 @@ namespace QR_Project_6.Models
             {
                 new Tipo_Producto(){ Descripcion = "Suculenta"},
                 new Tipo_Producto(){ Descripcion = "Cáctus"},
-                new Tipo_Producto(){ Descripcion = "Maceta"}
+                new Tipo_Producto(){ Descripcion = "Maceta"},
+                new Tipo_Producto(){ Descripcion = "Orquídea"}
             };
         }
+
+        
 
         private List<Tipo_Queja> tipo_Quejas()
         {
