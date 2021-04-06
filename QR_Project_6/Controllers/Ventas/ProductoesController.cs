@@ -10,6 +10,7 @@ using QR_Project_6.Models;
 
 namespace QR_Project_6.Controllers
 {
+    [Authorize]
     public class ProductoesController : Controller
     {
         private QR_Model db = new QR_Model();
@@ -35,7 +36,7 @@ namespace QR_Project_6.Controllers
             }
             return View(producto);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Productoes/Create
         public ActionResult Create()
         {
@@ -48,6 +49,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "ProductoID,Nombre,Monto,Tipo_Producto_TipoID")] Producto producto)
         {
             if (ModelState.IsValid)
@@ -60,7 +62,7 @@ namespace QR_Project_6.Controllers
             ViewBag.Tipo_Producto_TipoID = new SelectList(db.Tipo_Productos, "TipoID", "Descripcion", producto.Tipo_Producto_TipoID);
             return View(producto);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Productoes/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -82,6 +84,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "ProductoID,Nombre,Monto,Tipo_Producto_TipoID")] Producto producto)
         {
             if (ModelState.IsValid)
@@ -95,6 +98,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Productoes/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +116,7 @@ namespace QR_Project_6.Controllers
         // POST: Productoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Producto producto = db.Productos.Find(id);

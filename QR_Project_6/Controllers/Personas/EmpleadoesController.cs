@@ -12,6 +12,7 @@ using QR_Project_6.Models;
 
 namespace QR_Project_6.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EmpleadoesController : Controller
     {
         private QR_Model db = new QR_Model();

@@ -10,7 +10,13 @@ namespace QR_Project_6.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Quejas");
+            }
+            
+            return RedirectToAction("Login", "Account");
+            
         }
 
         public ActionResult About()

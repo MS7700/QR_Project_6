@@ -11,11 +11,13 @@ using QR_Project_6.Models;
 
 namespace QR_Project_6.Controllers
 {
+    [Authorize]
     public class Respuesta_ClienteController : Controller
     {
         private QR_Model db = new QR_Model();
 
         // GET: Respuesta_Cliente
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var respuesta_Clientes = db.Respuesta_Clientes.Include(r => r.Estado_Destino).Include(r => r.Estado_Origen).Include(r => r.Queja).Include(r => r.Reclamacion);
@@ -23,6 +25,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Respuesta_Cliente/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -38,6 +41,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Respuesta_Cliente/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.Estado_QR_Estado_DestinoID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion");
@@ -52,6 +56,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "RespuestaID,Valoracion,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Cliente respuesta_Cliente)
         {
             if (ModelState.IsValid)
@@ -224,6 +229,7 @@ namespace QR_Project_6.Controllers
 
 
         // GET: Respuesta_Cliente/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -247,6 +253,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "RespuestaID,Valoracion,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Cliente respuesta_Cliente)
         {
             if (ModelState.IsValid)
@@ -263,6 +270,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Respuesta_Cliente/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -280,6 +288,7 @@ namespace QR_Project_6.Controllers
         // POST: Respuesta_Cliente/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Respuesta_Cliente respuesta_Cliente = db.Respuesta_Clientes.Find(id);

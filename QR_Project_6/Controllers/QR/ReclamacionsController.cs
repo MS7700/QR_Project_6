@@ -13,6 +13,7 @@ using QR_Project_6.Models.Estados;
 
 namespace QR_Project_6.Controllers
 {
+    [Authorize]
     public class ReclamacionsController : Controller
     {
         private QR_Model db = new QR_Model();
@@ -184,6 +185,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Reclamacions/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -209,6 +211,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "QRID,Tipo_Reclamacion_TipoID,UserNameID,Fecha,Comentario,Cliente_ClienteID,Departamento_DepartamentoID,Empleado_EmpleadoID,Estado_QR_EstadoID,Sucursal_SucursalID")] Reclamacion reclamacion)
         {
             if (ModelState.IsValid)
@@ -227,6 +230,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Reclamacions/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -242,6 +246,7 @@ namespace QR_Project_6.Controllers
         }
 
         // POST: Reclamacions/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

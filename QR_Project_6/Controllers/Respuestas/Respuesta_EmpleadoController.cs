@@ -13,11 +13,13 @@ using QR_Project_6.Models.Estados;
 
 namespace QR_Project_6.Controllers
 {
+    [Authorize]
     public class Respuesta_EmpleadoController : Controller
     {
         private QR_Model db = new QR_Model();
 
         // GET: Respuesta_Empleado
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var respuesta_Empleados = db.Respuesta_Empleados.Include(r => r.Departamento_Destino).Include(r => r.Departamento_Origen).Include(r => r.Empleado_Destino).Include(r => r.Empleado_Origen).Include(r => r.Estado_Destino).Include(r => r.Estado_Origen).Include(r => r.Queja).Include(r => r.Reclamacion).Include(r => r.Sucursal_Destino).Include(r => r.Sucursal_Origen);
@@ -25,6 +27,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Respuesta_Empleado/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -40,6 +43,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Respuesta_Empleado/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.Departamento_Departamento_DestinoID = new SelectList(db.Departamentos, "DepartamentoID", "Nombre");
@@ -60,6 +64,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "RespuestaID,Departamento_Departamento_OrigenID,Departamento_Departamento_DestinoID,Empleado_Empleado_OrigenID,Empleado_Empleado_DestinoID,Sucursal_Sucursal_OrigenID,Sucursal_Sucursal_DestinoID,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Empleado respuesta_Empleado)
         {
             if (ModelState.IsValid)
@@ -355,6 +360,7 @@ namespace QR_Project_6.Controllers
 
 
         // GET: Respuesta_Empleado/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -384,6 +390,7 @@ namespace QR_Project_6.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "RespuestaID,Departamento_Departamento_OrigenID,Departamento_Departamento_DestinoID,Empleado_Empleado_OrigenID,Empleado_Empleado_DestinoID,Sucursal_Sucursal_OrigenID,Sucursal_Sucursal_DestinoID,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Empleado respuesta_Empleado)
         {
             if (ModelState.IsValid)
@@ -406,6 +413,7 @@ namespace QR_Project_6.Controllers
         }
 
         // GET: Respuesta_Empleado/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -421,6 +429,7 @@ namespace QR_Project_6.Controllers
         }
 
         // POST: Respuesta_Empleado/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

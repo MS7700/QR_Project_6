@@ -36,6 +36,7 @@ namespace QR_Project_6.Models
         public string Apellido { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de ingreso")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public Nullable<System.DateTime> Fecha_Ingreso { get; set; }
         
         [Phone]
@@ -108,6 +109,7 @@ namespace QR_Project_6.Models
         public string Apellido { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de ingreso")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public Nullable<System.DateTime> Fecha_Ingreso { get; set; }
         [DataType(DataType.PhoneNumber)]
         [Phone]
@@ -201,6 +203,7 @@ namespace QR_Project_6.Models
         public string UserNameID { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public Nullable<System.DateTime> Fecha { get; set; }
         [DataType(DataType.MultilineText)]
         public string Comentario { get; set; }
@@ -241,6 +244,7 @@ namespace QR_Project_6.Models
         public string UserNameID { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public Nullable<System.DateTime> Fecha { get; set; }
         
         [DataType(DataType.MultilineText)]
@@ -300,6 +304,7 @@ namespace QR_Project_6.Models
         public Nullable<int> Valoracion { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public Nullable<System.DateTime> Fecha { get; set; }
         [DataType(DataType.MultilineText)]
         [Display(Name = "Comentario")]
@@ -332,6 +337,7 @@ namespace QR_Project_6.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public Nullable<System.DateTime> Fecha { get; set; }
         [DataType(DataType.MultilineText)]
         [Display(Name = "Comentario")]
@@ -438,6 +444,7 @@ namespace QR_Project_6.Models
         public int TransaccionID { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public Nullable<System.DateTime> Fecha { get; set; }
         [DataType(DataType.Currency)]
         [Display(Name = "Monto")]

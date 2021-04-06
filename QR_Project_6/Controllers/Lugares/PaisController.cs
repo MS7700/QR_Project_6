@@ -10,6 +10,7 @@ using QR_Project_6.Models;
 
 namespace QR_Project_6.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PaisController : Controller
     {
         private QR_Model db = new QR_Model();

@@ -42,7 +42,10 @@
                     </div>
                 </div>
                 <p>
-                    @Html.ActionLink("Registrarse como usuario nuevo", "Register")
+                    @Html.ActionLink("Registrarse como empleado", "RegisterEmpleado")
+                </p>
+                <p>
+                    @Html.ActionLink("Registrarse como cliente", "RegisterCliente")
                 </p>
                 @* Habilite esta opción una vez tenga la confirmación de la cuenta habilitada para la funcionalidad de restablecimiento de contraseña
                     <p>
@@ -53,7 +56,10 @@
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            <figure class="figure">
+                <figcaption><h1 class="figure-caption">Gestión de Quejas y Reclamaciones</h1></figcaption>
+                <img class="figure-img" src="~/img/LogoGrande.png" />
+            </figure>
         </section>
     </div>
 </div>
