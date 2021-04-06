@@ -1,7 +1,9 @@
 ﻿@model QR_Project_6.Models.Respuesta_Empleado
 
 <div class="well">
-    
+    <h3 class="text-muted text-center">
+        @Html.DisplayFor(model => model.Empleado_Destino.Nombre) @Html.DisplayFor(model => model.Empleado_Destino.Apellido)
+    </h3>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Fecha)
