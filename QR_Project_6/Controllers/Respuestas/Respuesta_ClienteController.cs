@@ -160,8 +160,6 @@ namespace QR_Project_6.Controllers
 
                     respuesta_Cliente.Fecha = DateTime.Now;
 
-
-
                     queja.Estado_QR_EstadoID = respuesta_Cliente.Estado_QR_Estado_DestinoID;
 
                     db.Respuesta_Clientes.Add(respuesta_Cliente);
@@ -239,6 +237,10 @@ namespace QR_Project_6.Controllers
             int? id_reclamacion = reclamacion.QRID;
             List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
             List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
+            if (viewmodel.ReclamacionViewModel.Respuestas == null)
+            {
+                viewmodel.ReclamacionViewModel.Respuestas = new List<Respuesta>();
+            }
             viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Clientes);
             viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Empleados);
             viewmodel.ReclamacionViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
@@ -251,13 +253,27 @@ namespace QR_Project_6.Controllers
 
             Respuesta_Cliente respuesta_Cliente = viewModel.Respuesta_Cliente;
             Reclamacion reclamacion = db.Reclamacions.Find(viewModel.ReclamacionViewModel.Reclamacion.QRID);
+            respuesta_Cliente.Reclamacion_ReclamacionID = reclamacion.QRID;
+
+            if (ValoracionInvalida(respuesta_Cliente))
+            {
+                RestartRespuestaClienteReclamacionViewModel(viewModel, respuesta_Cliente, reclamacion);
+                ModelState.AddModelError("", "Valoración inválida");
+                return View(viewModel);
+            }
+            if (EstadoInvalido(respuesta_Cliente))
+            {
+                RestartRespuestaClienteReclamacionViewModel(viewModel, respuesta_Cliente, reclamacion);
+                ModelState.AddModelError("", "Estado inválido");
+                return View(viewModel);
+            }
+
+
 
             if (ModelState.IsValid)
             {
-                respuesta_Cliente.Reclamacion_ReclamacionID = reclamacion.QRID;
+                
                 respuesta_Cliente.Fecha = DateTime.Now;
-
-
 
                 reclamacion.Estado_QR_EstadoID = respuesta_Cliente.Estado_QR_Estado_DestinoID;
 
@@ -267,9 +283,18 @@ namespace QR_Project_6.Controllers
                 return RedirectToAction("Index", "Reclamacions");
             }
 
-            AddViewBagCreatePost(respuesta_Cliente);
+            RestartRespuestaClienteReclamacionViewModel(viewModel, respuesta_Cliente, reclamacion);
             return View(viewModel);
         }
+
+        private void RestartRespuestaClienteReclamacionViewModel(RespuestaClienteReclamacionViewModel viewModel, Respuesta_Cliente respuesta_Cliente, Reclamacion reclamacion)
+        {
+            viewModel.ReclamacionViewModel.Reclamacion = reclamacion;
+
+            AddListRespuestasReclamaciones(reclamacion, viewModel);
+            AddViewBagCreatePost(respuesta_Cliente);
+        }
+
 
 
 

@@ -241,7 +241,10 @@ namespace QR_Project_6.Controllers
                 return HttpNotFound();
             }
             RespuestaEmpleadoReclamacionViewModel viewmodel = InitializeRERViewModel(reclamacion);
-            AddListRespuestasReclamacion(reclamacion, viewmodel);
+
+            int? id_reclamacion = reclamacion.QRID;
+            //AddListRespuestasReclamacion(reclamacion, viewmodel);
+            AddListRespuestasReclamacion(viewmodel, id_reclamacion);
             Respuesta_Empleado respuesta_Empleado = viewmodel.Respuesta_Empleado;
 
             //List<Estado_QR> disabled = new List<Estado_QR>();
@@ -283,15 +286,24 @@ namespace QR_Project_6.Controllers
             };
         }
 
-        private void AddListRespuestasReclamacion(Reclamacion reclamacion, RespuestaEmpleadoReclamacionViewModel viewmodel)
+        private void AddListRespuestasReclamacion(RespuestaEmpleadoReclamacionViewModel viewmodel, int? id_reclamacion)
         {
-            int? id_reclamacion = reclamacion.QRID;
+            
             List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
             List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
             viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Clientes);
             viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Empleados);
             viewmodel.ReclamacionViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
         }
+        //private void AddListRespuestasReclamacion(Reclamacion reclamacion, RespuestaEmpleadoReclamacionViewModel viewmodel)
+        //{
+        //    int? id_reclamacion = reclamacion.QRID;
+        //    List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
+        //    List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
+        //    viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Clientes);
+        //    viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Empleados);
+        //    viewmodel.ReclamacionViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

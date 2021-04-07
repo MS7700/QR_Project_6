@@ -1,5 +1,11 @@
 ﻿@model QR_Project_6.Models.RespuestaClienteReclamacionViewModel
+
+
+@using QR_Project_6.Models
 @using QR_Project_6.Models.Estados
+@using QR_Project_6.Extensions
+
+
 @{
     ViewBag.Title = "CreateFromReclamacion";
     Estado_QR_Helper estado_QR_Helper = new Estado_QR_Helper();
@@ -33,7 +39,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Respuesta_Cliente.Valoracion, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Respuesta_Cliente.Valoracion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CustomValoracionRange(model => model.Respuesta_Cliente.ValoracionID, (List<Valoracion>)ViewBag.Valoraciones)
+                @*@Html.EditorFor(model => model.Respuesta_Cliente.Valoracion, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.Respuesta_Cliente.Valoracion, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -57,6 +64,26 @@
 
 
 <script>
+
+    function onChangeValoracion(value) {
+        var select = document.getElementById("Respuesta_Cliente_ValoracionID");
+        var slide = document.getElementById("rangeRespuesta_Cliente_ValoracionID");
+        var arrayValoracion = JSON.parse('@Html.Raw(Json.Encode(ViewBag.ValoracionesArray))');
+        console.log("array: " + arrayValoracion);
+        var value = parseInt(slide.value);
+        console.log("value:" + value);
+        for (let i = 0; i < arrayValoracion.length; i++) {
+            let valoracion = arrayValoracion[i]
+            console.log("comparing: " + value + " and " + valoracion.Valor);
+            if (value === valoracion.Valor) {
+                select.value = valoracion.ValoracionID;
+                console.log(true);
+                return;
+            }
+        }
+    }
+
+
     function disableValues() {
         var select = document.getElementById("Respuesta_Cliente_Estado_QR_Estado_DestinoID").getElementsByTagName("option");
 
