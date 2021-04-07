@@ -33,5 +33,6 @@ namespace QR_Project_6.Models.Model
         public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Transaccion> Transaccions { get; set; }
         public virtual DbSet<Transaccion_Producto> Transaccion_Productos { get; set; }
+        public virtual DbSet<Valoracion> Valoracions { get; set; }
     }
 }

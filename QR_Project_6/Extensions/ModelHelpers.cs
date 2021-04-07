@@ -10,8 +10,25 @@ using QR_Project_6.Models.Model;
 
 namespace QR_Project_6.Extensions
 {
+    
+
     public static class ModelHelpers
     {
+        public static int? GetMedianValoracion(this IEnumerable<Valoracion> source)
+        {
+            
+            // Create a copy of the input, and sort the copy
+            var temp = source.OrderBy(v=>v.Valor).ToArray();
+            int count = temp.Length;
+            if (count == 0)
+            {
+                throw new InvalidOperationException("Empty collection");
+            }
+            else
+            {
+                return temp[count / 2].ValoracionID;
+            }
+        }
         public static int CompareRespuestas(Respuesta x, Respuesta y)
         {
             if (x.Fecha == null && y.Fecha == null)

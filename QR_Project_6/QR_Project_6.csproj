@@ -197,6 +197,7 @@
     <Compile Include="Controllers\QR\ReclamacionsController.cs" />
     <Compile Include="Controllers\Respuestas\Respuesta_ClienteController.cs" />
     <Compile Include="Controllers\Respuestas\Respuesta_EmpleadoController.cs" />
+    <Compile Include="Controllers\Respuestas\ValoracionsController.cs" />
     <Compile Include="Controllers\Tipos\Tipo_IdentificacionController.cs" />
     <Compile Include="Controllers\Tipos\Tipo_ProductoController.cs" />
     <Compile Include="Controllers\Tipos\Tipo_QuejaController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\Personas\Persona.cs" />
     <Compile Include="Models\QR\QR.cs" />
     <Compile Include="Models\Respuestas\Respuesta.cs" />
+    <Compile Include="Models\Respuestas\Valoracion.cs" />
     <Compile Include="Models\Tipos\Tipo.cs" />
     <Compile Include="Models\Ventas\Producto.cs" />
     <Compile Include="Models\QR\Queja.cs" />
@@ -522,6 +524,11 @@
     <Content Include="Views\Respuesta_Empleado\_DetailsRespuestaCliente.cshtml" />
     <Content Include="Views\Respuesta_Empleado\_DetailsRespuestaEmpleado.cshtml" />
     <Content Include="Views\Respuesta_Empleado\_ListRespuestas.cshtml" />
+    <Content Include="Views\Valoracions\Create.cshtml" />
+    <Content Include="Views\Valoracions\Delete.cshtml" />
+    <Content Include="Views\Valoracions\Details.cshtml" />
+    <Content Include="Views\Valoracions\Edit.cshtml" />
+    <Content Include="Views\Valoracions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

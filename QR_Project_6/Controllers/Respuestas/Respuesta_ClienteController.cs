@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QR_Project_6.Extensions;
 using QR_Project_6.Models;
+using QR_Project_6.Models.Estados;
 
 namespace QR_Project_6.Controllers
 {
@@ -20,7 +21,7 @@ namespace QR_Project_6.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var respuesta_Clientes = db.Respuesta_Clientes.Include(r => r.Estado_Destino).Include(r => r.Estado_Origen).Include(r => r.Queja).Include(r => r.Reclamacion);
+            var respuesta_Clientes = db.Respuesta_Clientes.Include(r => r.Estado_Destino).Include(r => r.Estado_Origen).Include(r => r.Queja).Include(r => r.Reclamacion).Include(r=>r.Valoracion);
             return View(respuesta_Clientes.ToList());
         }
 
@@ -48,6 +49,7 @@ namespace QR_Project_6.Controllers
             ViewBag.Estado_QR_Estado_OrigenID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion");
             ViewBag.Queja_QuejaID = new SelectList(db.Quejas, "QRID", "QRID");
             ViewBag.Reclamacion_ReclamacionID = new SelectList(db.Reclamacions, "QRID", "QRID");
+            ViewBag.ValoracionID = new SelectList(db.Valoracions, "ValoracionID", "Descripcion");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace QR_Project_6.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Create([Bind(Include = "RespuestaID,Valoracion,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Cliente respuesta_Cliente)
+        public ActionResult Create([Bind(Include = "RespuestaID,ValoracionID,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Cliente respuesta_Cliente)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +72,7 @@ namespace QR_Project_6.Controllers
             ViewBag.Estado_QR_Estado_OrigenID = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", respuesta_Cliente.Estado_QR_Estado_OrigenID);
             ViewBag.Queja_QuejaID = new SelectList(db.Quejas, "QRID", "QRID", respuesta_Cliente.Queja_QuejaID);
             ViewBag.Reclamacion_ReclamacionID = new SelectList(db.Reclamacions, "QRID", "QRID", respuesta_Cliente.Reclamacion_ReclamacionID);
+            ViewBag.ValoracionID = new SelectList(db.Valoracions, "ValoracionID", "Descripcion",respuesta_Cliente.ValoracionID);
             return View(respuesta_Cliente);
         }
 
@@ -107,6 +110,10 @@ namespace QR_Project_6.Controllers
             int? id_queja = queja.QRID;
             List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Queja_QuejaID == id_queja).ToList();
             List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Queja_QuejaID == id_queja).ToList();
+            if(viewmodel.QuejaViewModel.Respuestas == null)
+            {
+                viewmodel.QuejaViewModel.Respuestas = new List<Respuesta>();
+            }
             viewmodel.QuejaViewModel.Respuestas.AddRange(respuesta_Clientes);
             viewmodel.QuejaViewModel.Respuestas.AddRange(respuesta_Empleados);
             viewmodel.QuejaViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
@@ -114,7 +121,9 @@ namespace QR_Project_6.Controllers
 
         private void AddViewBagCreate(Respuesta_Cliente respuesta_Cliente)
         {
-            
+
+            ViewBag.Valoraciones = db.Valoracions.ToList();
+            ViewBag.ValoracionesArray = db.Valoracions.ToArray();
 
             ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", respuesta_Cliente.Estado_QR_Estado_DestinoID);
         }
@@ -131,29 +140,65 @@ namespace QR_Project_6.Controllers
 
             Respuesta_Cliente respuesta_Cliente = viewModel.Respuesta_Cliente;
             Queja queja = db.Quejas.Find(viewModel.QuejaViewModel.Queja.QRID);
+            respuesta_Cliente.Queja_QuejaID = queja.QRID;
 
-            if (ModelState.IsValid)
+            if (ValoracionInvalida(respuesta_Cliente))
             {
-                respuesta_Cliente.Queja_QuejaID = queja.QRID;
-                respuesta_Cliente.Fecha = DateTime.Now;
-
-
-
-                queja.Estado_QR_EstadoID = respuesta_Cliente.Estado_QR_Estado_DestinoID;
-
-                db.Respuesta_Clientes.Add(respuesta_Cliente);
-                db.Entry(queja).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index", "Quejas");
+                RestartRespuestaClienteQuejaViewModel(viewModel, respuesta_Cliente, queja);
+                ModelState.AddModelError("", "Valoración inválida");
+                return View(viewModel);
+            }
+            if (EstadoInvalido(respuesta_Cliente))
+            {
+                RestartRespuestaClienteQuejaViewModel(viewModel, respuesta_Cliente, queja);
+                ModelState.AddModelError("", "Estado inválido");
+                return View(viewModel);
             }
 
-            AddViewBagCreatePost(respuesta_Cliente);
+                if (ModelState.IsValid)
+                {
+
+                    respuesta_Cliente.Fecha = DateTime.Now;
+
+
+
+                    queja.Estado_QR_EstadoID = respuesta_Cliente.Estado_QR_Estado_DestinoID;
+
+                    db.Respuesta_Clientes.Add(respuesta_Cliente);
+                    db.Entry(queja).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Quejas");
+                }
+            RestartRespuestaClienteQuejaViewModel(viewModel, respuesta_Cliente, queja);
             return View(viewModel);
         }
 
+        private static bool EstadoInvalido(Respuesta_Cliente respuesta_Cliente)
+        {
+            Estado_QR_Helper helper = new Estado_QR_Helper();
+            bool EstadoReabierto = respuesta_Cliente.Estado_QR_Estado_DestinoID == helper.GetEstadoByDescripcion(Estado_QR_Helper.REABIERTO_DISCONFORMIDAD).EstadoID;
+            bool EstadoCerrado = respuesta_Cliente.Estado_QR_Estado_DestinoID == helper.GetEstadoByDescripcion(Estado_QR_Helper.CERRADO).EstadoID;
+            //Debe ser falso si es uno de los estados válidos
+            return !(EstadoReabierto || EstadoCerrado);
+        }
+
+        private bool ValoracionInvalida(Respuesta_Cliente respuesta_Cliente)
+        {
+            return !db.Valoracions.Any(v => v.ValoracionID == respuesta_Cliente.ValoracionID);
+        }
+
+        private void RestartRespuestaClienteQuejaViewModel(RespuestaClienteQuejaViewModel viewModel, Respuesta_Cliente respuesta_Cliente, Queja queja)
+        {
+            viewModel.QuejaViewModel.Queja = queja;
+            
+            AddListRespuestasQuejas(queja, viewModel);
+            AddViewBagCreatePost(respuesta_Cliente);
+        }
+
+
         private void AddViewBagCreatePost(Respuesta_Cliente respuesta_Cliente)
         {
-
+            ViewBag.Valoraciones = db.Valoracions.ToList();
             ViewBag.ID_Estado_Origen = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", respuesta_Cliente.Estado_QR_Estado_DestinoID);
             ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QRs, "EstadoID", "Descripcion", respuesta_Cliente.Estado_QR_Estado_DestinoID);
         }
@@ -254,7 +299,7 @@ namespace QR_Project_6.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit([Bind(Include = "RespuestaID,Valoracion,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Cliente respuesta_Cliente)
+        public ActionResult Edit([Bind(Include = "RespuestaID,ValoracionID,Fecha,Detalle,Estado_QR_Estado_OrigenID,Estado_QR_Estado_DestinoID,Queja_QuejaID,Reclamacion_ReclamacionID")] Respuesta_Cliente respuesta_Cliente)
         {
             if (ModelState.IsValid)
             {

@@ -1,5 +1,8 @@
 ﻿@model QR_Project_6.Models.RespuestaClienteQuejaViewModel
+
+@using QR_Project_6.Models
 @using QR_Project_6.Models.Estados
+@using QR_Project_6.Extensions
 @{
     ViewBag.Title = "CreateFromQueja";
     Estado_QR_Helper estado_QR_Helper = new Estado_QR_Helper();
@@ -13,46 +16,72 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-    @Html.HiddenFor(model => model.QuejaViewModel.Queja.QRID)
-    @Html.HiddenFor(model => model.Respuesta_Cliente.Estado_QR_Estado_OrigenID)
+        @Html.HiddenFor(model => model.QuejaViewModel.Queja.QRID)
+        @Html.HiddenFor(model => model.Respuesta_Cliente.Estado_QR_Estado_OrigenID)
 
-<div class="form-group">
-    @Html.LabelFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, htmlAttributes: new { @class = "control-label col-md-2" })
-    <div class="col-md-10">
-        @Html.DropDownListFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, (SelectList)ViewBag.ID_Estado_Destino, null, new { @class = "form-control" })
-        @*@Html.DropDownList("ID_Estado_Destino", null, htmlAttributes: new { @class = "form-control" })*@
-        @Html.ValidationMessageFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, "", new { @class = "text-danger" })
-    </div>
-</div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, (SelectList)ViewBag.ID_Estado_Destino, null, new { @class = "form-control" })
+                @*@Html.DropDownList("ID_Estado_Destino", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Respuesta_Cliente.Valoracion, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Respuesta_Cliente.Valoracion, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Respuesta_Cliente.Valoracion, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Respuesta_Cliente.Valoracion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.InputRangeFor(model => model.Respuesta_Cliente.Valoracion)*@
+                @Html.CustomValoracionRange(model => model.Respuesta_Cliente.ValoracionID, (List<Valoracion>)ViewBag.Valoraciones)
+                @*@Html.EditorFor(model => model.Respuesta_Cliente.Valoracion, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Respuesta_Cliente.ValoracionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Respuesta_Cliente.Detalle, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Respuesta_Cliente.Detalle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Respuesta_Cliente.Detalle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Agregar" class="btn btn-success" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Respuesta_Cliente.Detalle, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Respuesta_Cliente.Detalle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Respuesta_Cliente.Detalle, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Agregar" class="btn btn-success" />
-        </div>
-    </div>
-</div>
 }
 <script>
+    function onChangeValoracion(value) {
+        var select = document.getElementById("Respuesta_Cliente_ValoracionID");
+        var slide = document.getElementById("rangeRespuesta_Cliente_ValoracionID");
+        var arrayValoracion = JSON.parse('@Html.Raw(Json.Encode(ViewBag.ValoracionesArray))');
+        console.log("array: " + arrayValoracion);
+        var value = parseInt(slide.value);
+        console.log("value:" + value);
+        for (let i = 0; i < arrayValoracion.length; i++) {
+            let valoracion = arrayValoracion[i]
+            console.log("comparing: " + value + " and " + valoracion.Valor);
+            if (value === valoracion.Valor) {
+                select.value = valoracion.ValoracionID;
+                console.log(true);
+                return;
+            }
+        }
+    }
+    function initializeSlide() {
+        var select = document.getElementById("Respuesta_Cliente_ValoracionID");
+        var slide = document.getElementById("rangeRespuesta_Cliente_ValoracionID");
+    }
+
+
+
     function disableValues() {
         var select = document.getElementById("Respuesta_Cliente_Estado_QR_Estado_DestinoID").getElementsByTagName("option");
 

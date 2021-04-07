@@ -128,5 +128,10 @@ namespace QR_Project_6.Models
     {
 
     }
+    [MetadataType(typeof(ValoracionMetadata))]
+    public partial class Valoracion
+    {
+
+    }
 
 }

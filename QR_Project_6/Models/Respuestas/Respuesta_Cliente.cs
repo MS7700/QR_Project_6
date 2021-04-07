@@ -17,7 +17,9 @@ namespace QR_Project_6.Models
     {
         [Key]
         public override Nullable<int> RespuestaID { get; set; }
-        public Nullable<int> Valoracion { get; set; }
-    
+        //public Nullable<int> Valoracion { get; set; }
+        public Nullable<int> ValoracionID { get; set; }
+        public virtual Valoracion Valoracion { get; set; }
+
     }
 }

@@ -24,6 +24,9 @@ namespace QR_Project_6.Models
             context.Departamentos.AddRange(departamentos());
             context.Estado_Clientes.AddRange(estado_Clientes());
             context.Estado_Transaccions.AddRange(estado_Transaccions());
+
+            context.Valoracions.AddRange(valoracions());
+
             context.SaveChanges();
             //context.Direccions.AddRange(direccions());
             direccions(context);
@@ -307,7 +310,19 @@ namespace QR_Project_6.Models
             };
         }
 
-        
+        private List<Valoracion> valoracions()
+        {
+            return new List<Valoracion>()
+            {
+                new Valoracion(){ Descripcion = "Malo", Valor = 1},
+                new Valoracion(){ Descripcion = "Deficiente", Valor = 2},
+                new Valoracion(){ Descripcion = "Bueno", Valor = 3},
+                new Valoracion(){ Descripcion = "Muy bueno", Valor = 4},
+                new Valoracion(){ Descripcion = "Excelente", Valor = 5}
+            };
+        }
+
+
 
         //private List<Empleado> empleados()
         //{

@@ -299,9 +299,13 @@ namespace QR_Project_6.Models
     {
         [Display(Name = "Respuesta del cliente")]
         public int RespuestaID { get; set; }
+        //[Display(Name = "Valoración")]
+        //[Range(typeof(int),"1","5",ErrorMessage = "Valor incorrecto")]
+        //public Nullable<int> Valoracion { get; set; }
         [Display(Name = "Valoración")]
-        [Range(typeof(int),"1","5",ErrorMessage = "Valor incorrecto")]
-        public Nullable<int> Valoracion { get; set; }
+        public Nullable<int> ValoracionID { get; set; }
+        [Display(Name = "Valoración")]
+        public virtual Valoracion Valoracion { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Fecha")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
@@ -462,6 +466,17 @@ namespace QR_Project_6.Models
         public virtual Estado_Transaccion Estado_Transaccion { get; set; }
         [Display(Name = "Estado de transacción")]
         public Nullable<int> Estado_Transaccion_EstadoID { get; set; }
+    }
+    [DisplayColumn("Descripcion")]
+    [DisplayName("Valoracion")]
+    public class ValoracionMetadata
+    {
+        [Display(Name = "Valoracion")]
+        public Nullable<int> ValoracionID { get; set; }
+        [Display(Name = "Valoracion")]
+        public string Descripcion { get; set; }
+        [Display(Name = "Valor")]
+        public int Valor { get; set; }
     }
 
 }

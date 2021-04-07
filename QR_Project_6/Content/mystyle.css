@@ -65,3 +65,8 @@
 .dl-horizontal dd {
     margin-left: 210px;
 }
+.no-arrow {
+    -moz-appearance: none;
+    /* for Safari, Chrome, Opera */
+    -webkit-appearance: none;
+}

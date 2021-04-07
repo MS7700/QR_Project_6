@@ -32,5 +32,6 @@ namespace QR_Project_6.Models
         public virtual Queja Queja { get; set; }
         public Nullable<int> Reclamacion_ReclamacionID { get; set; }
         public virtual Reclamacion Reclamacion { get; set; }
+        
     }
 }
