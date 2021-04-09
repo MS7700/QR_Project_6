@@ -3,9 +3,10 @@
     ViewBag.Title = "Reclamaciones";
 }
 
-    <h2>Reclamaciones</h2>
+<h2>Reclamaciones</h2>
 
-<a href="@Url.Action("ExportReclamaciones")">Download Excel</a>
+
+
 
 @Html.Partial("_Reclamaciones", Model.Reclamaciones)
 
@@ -14,4 +15,5 @@
 
 <div>
     @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Descargar", "ExportReclamaciones", null, new { @class = "btn btn-primary" })
 </div>

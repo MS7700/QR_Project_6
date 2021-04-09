@@ -5,7 +5,8 @@
 
 <h2>Quejas</h2>
 
-<a href="@Url.Action("ExportQuejas")">Download Excel</a>
+
+
 
 @Html.Partial("_Quejas", Model.Quejas)
 
@@ -14,4 +15,6 @@
 
 <div>
     @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Descargar", "ExportQuejas", null, new { @class = "btn btn-primary" })
+
 </div>

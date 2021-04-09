@@ -38,7 +38,11 @@ namespace QR_Project_6.Controllers
             }
             return View(empleado);
         }
-
+        public ActionResult _GetDireccion(int? id)
+        {
+            var direccion = db.Direccions.Find(id);
+            return PartialView(direccion);
+        }
         // GET: Empleadoes/Create
         public ActionResult Create()
         {
