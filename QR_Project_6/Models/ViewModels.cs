@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -50,5 +52,17 @@ namespace QR_Project_6.Models
     {
         public ReclamacionViewModel ReclamacionViewModel { get; set; }
         public Respuesta_Cliente Respuesta_Cliente { get; set; }
+    }
+    public class SatisfaccionViewModel
+    {
+        public List<ValoracionViewModel> Valoracions { get; set; }
+        [Display(Name = "Grado de satisfacción")]
+        public decimal GradoSatisfaccion { get; set; }
+    }
+    public class ValoracionViewModel
+    {
+        public string Valoracion { get; set; }
+        public int Cantidad { get; set; }
+        public decimal Porcentaje { get; set; }
     }
 }

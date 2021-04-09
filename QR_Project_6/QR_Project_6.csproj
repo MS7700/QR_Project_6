@@ -195,6 +195,7 @@
     <Compile Include="Controllers\Personas\EmpleadoesController.cs" />
     <Compile Include="Controllers\QR\QuejasController.cs" />
     <Compile Include="Controllers\QR\ReclamacionsController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\Respuestas\Respuesta_ClienteController.cs" />
     <Compile Include="Controllers\Respuestas\Respuesta_EmpleadoController.cs" />
     <Compile Include="Controllers\Respuestas\ValoracionsController.cs" />
@@ -529,6 +530,8 @@
     <Content Include="Views\Valoracions\Details.cshtml" />
     <Content Include="Views\Valoracions\Edit.cshtml" />
     <Content Include="Views\Valoracions\Index.cshtml" />
+    <Content Include="Views\Reportes\_Valoraciones.cshtml" />
+    <Content Include="Views\Reportes\Satisfaccion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

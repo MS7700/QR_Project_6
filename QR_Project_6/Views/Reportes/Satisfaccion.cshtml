@@ -1,0 +1,12 @@
+﻿@model QR_Project_6.Models.SatisfaccionViewModel
+@{
+    ViewBag.Title = "Satisfaccion";
+}
+
+<h2>Satisfaccion</h2>
+
+
+
+@Html.Partial("_Valoraciones", Model.Valoracions)
+
+<h3>Grado de satifacción total: @Model.GradoSatisfaccion%</h3>
