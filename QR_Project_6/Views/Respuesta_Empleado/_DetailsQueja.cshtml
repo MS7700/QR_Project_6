@@ -1,62 +1,72 @@
 ﻿@model QR_Project_6.Models.QuejaViewModel
 
-<dl class="dl-horizontal">
-    <dt>
-        @Html.DisplayNameFor(model => model.Queja.Fecha)
-    </dt>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.QRID)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Queja.Fecha)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.QRID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.Fecha)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Fecha)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.Comentario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Comentario)
+        </dd>
 
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Queja.Comentario)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.Cliente)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Queja.Comentario)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Cliente.Identificacion)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Cliente.Nombre) @Html.DisplayFor(model => model.Queja.Cliente.Apellido)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.Departamento)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Departamento.Nombre)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Queja.Cliente)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.Empleado)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Queja.Cliente.Identificacion)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Empleado.Identificacion)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Empleado.Nombre) @Html.DisplayFor(model => model.Queja.Empleado.Apellido)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Queja.Departamento)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.Estado_QR)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Queja.Departamento.Nombre)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Estado_QR.Descripcion)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Queja.Empleado)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Queja.Tipo_Queja)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Queja.Empleado.Identificacion)
-    </dd>
-
-    <dt>
-        @Html.DisplayNameFor(model => model.Queja.Estado_QR)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.Queja.Estado_QR.Descripcion)
-    </dd>
-
-    <dt>
-        @Html.DisplayNameFor(model => model.Queja.Tipo_Queja)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.Queja.Tipo_Queja.Descripcion)
-    </dd>
-</dl>
+        <dd>
+            @Html.DisplayFor(model => model.Queja.Tipo_Queja.Descripcion)
+        </dd>
+    </dl>
 @Html.Partial("_ListRespuestas", Model.Respuestas)

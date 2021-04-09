@@ -1,62 +1,73 @@
 ﻿@model QR_Project_6.Models.ReclamacionViewModel
 
-<dl class="dl-horizontal">
-    <dt>
-        @Html.DisplayNameFor(model => model.Reclamacion.Fecha)
-    </dt>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.QRID)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Reclamacion.Fecha)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.QRID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.Fecha)
+        </dt>
 
-
-    <dt>
-        @Html.DisplayNameFor(model => model.Reclamacion.Comentario)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.Reclamacion.Comentario)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Fecha)
+        </dd>
 
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Reclamacion.Cliente)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.Comentario)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Reclamacion.Cliente.Identificacion)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Comentario)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Reclamacion.Departamento)
-    </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Reclamacion.Departamento.Nombre)
-    </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.Cliente)
+        </dt>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Reclamacion.Empleado)
-    </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Cliente.Identificacion)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Cliente.Nombre) @Html.DisplayFor(model => model.Reclamacion.Cliente.Apellido)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.Departamento)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Reclamacion.Empleado.Identificacion)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Departamento.Nombre)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Reclamacion.Estado_QR)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.Empleado)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Reclamacion.Estado_QR.Descripcion)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Empleado.Identificacion)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Empleado.Nombre) @Html.DisplayFor(model => model.Reclamacion.Empleado.Apellido)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.Estado_QR)
+        </dt>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Reclamacion.Tipo_Reclamacion)
-    </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Estado_QR.Descripcion)
+        </dd>
 
-    <dd>
-        @Html.DisplayFor(model => model.Reclamacion.Tipo_Reclamacion.Descripcion)
-    </dd>
-</dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Reclamacion.Tipo_Reclamacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reclamacion.Tipo_Reclamacion.Descripcion)
+        </dd>
+    </dl>
 @Html.Partial("_ListRespuestas", Model.Respuestas)

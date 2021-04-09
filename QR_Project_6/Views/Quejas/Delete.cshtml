@@ -12,13 +12,22 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.QRID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QRID)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Cliente)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Cliente.Identificacion)
         </dd>
-
+        <dd>
+            @Html.DisplayFor(model => model.Cliente.Nombre) @Html.DisplayFor(model => model.Cliente.Apellido)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Departamento)
         </dt>
@@ -33,6 +42,9 @@
 
         <dd>
             @Html.DisplayFor(model => model.Empleado.Identificacion)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Empleado.Nombre) @Html.DisplayFor(model => model.Empleado.Apellido)
         </dd>
 
         <dt>
@@ -59,13 +71,6 @@
             @Html.DisplayFor(model => model.Tipo_Queja.Descripcion)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserNameID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserNameID)
-        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Fecha)
