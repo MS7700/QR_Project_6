@@ -265,3 +265,9 @@ C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\bin\es\Microsoft.Owin.Se
 C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\obj\Debug\QR_Project_6.csproj.CopyComplete
 C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\obj\Debug\QR_Project_6.dll
 C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\obj\Debug\QR_Project_6.pdb
+C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\bin\EPPlus.dll
+C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\bin\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\bin\System.ComponentModel.Annotations.dll
+C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\bin\EPPlus.xml
+C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\bin\Microsoft.IO.RecyclableMemoryStream.xml
+C:\Users\mslopez\source\repos\QR_Project_6\QR_Project_6\obj\Debug\QR_Project_6.csprojAssemblyReference.cache

@@ -30,6 +30,7 @@
         @HtmlHelperExtensions.SidebarElement("Estado_Cliente", "Estados de cliente")
         @HtmlHelperExtensions.SidebarElement("Estado_QR", "Estados de QR")
         @HtmlHelperExtensions.SidebarElement("Estado_Transaccion", "Estados de transacción")
+        @HtmlHelperExtensions.SidebarElement("Reportes", "Reportes")
     }
     else if (User.IsInRole("Empleado"))
     {
@@ -38,6 +39,7 @@
         @HtmlHelperExtensions.SidebarElement("Clientes", "Clientes")
         @HtmlHelperExtensions.SidebarElement("Empleadoes", "Empleados")
         @HtmlHelperExtensions.SidebarElement("Productoes", "Productos")
+        @HtmlHelperExtensions.SidebarElement("Reportes", "Reportes")
     }
     else if (User.IsInRole("Cliente"))
     {
