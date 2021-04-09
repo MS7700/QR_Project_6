@@ -1,56 +1,100 @@
 ﻿@model IEnumerable<QR_Project_6.Models.Transaccion>
 
+@foreach (var item in Model)
+{
+    <div class="panel panel-default">
+        <table class="table">
+            <thead>
+                <tr>
 
-<table class="table">
-    <thead>
-    <tr>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.Empleado)
-            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estado_Transaccion)
-            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fecha)
-            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Monto)
-            <input class="form-control search-input input-sm" onkeyup="myFilter(this)" type="text" placeholder="Filter">
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-    <tr>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.Empleado.Identificacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Estado_Transaccion.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fecha)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Monto)
-        </td>
-        <td>
-            <div class="btn-group-vertical">
-                @Html.ActionLink("Editar", "Edit", new { id = item.TransaccionID }, new { @class = "btn btn-primary btn-xs" })
-                @Html.ActionLink("Detalles", "Details", new { id = item.TransaccionID }, new { @class = "btn btn-default btn-xs" })
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.TransaccionID }, new { @class = "btn btn-danger btn-xs" })
-            </div>
-        </td>
-    </tr>
-    <tr>
-        @Html.Action("_getProductos")
-    </tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Empleado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado_Transaccion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Monto)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empleado.Identificacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado_Transaccion.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fecha)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Monto)
+                    </td>
+                </tr>
+                <tr>
+                    @Html.Action("_getProductos", new { id = item.TransaccionID })
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    
 }
-</tbody>
-</table>
+
+
+@*<table class="table">
+        <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Empleado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado_Transaccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Monto)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Empleado.Identificacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado_Transaccion.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Monto)
+            </td>
+            <td>
+                <div class="btn-group-vertical">
+                    @Html.ActionLink("Editar", "Edit", new { id = item.TransaccionID }, new { @class = "btn btn-primary btn-xs" })
+                    @Html.ActionLink("Detalles", "Details", new { id = item.TransaccionID }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.TransaccionID }, new { @class = "btn btn-danger btn-xs" })
+                </div>
+            </td>
+        </tr>
+        <tr>
+            @Html.Action("_getProductos",new { id = item.TransaccionID })
+        </tr>
+    }
+    </tbody>
+    </table>*@

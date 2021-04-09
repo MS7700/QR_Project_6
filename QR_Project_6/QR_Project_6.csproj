@@ -551,6 +551,7 @@
     <Content Include="Views\Reportes\Reclamaciones.cshtml" />
     <Content Include="Views\Clientes\_GetTransacciones.cshtml" />
     <Content Include="Views\Clientes\_GetProductos.cshtml" />
+    <Content Include="Views\Clientes\_GetDireccion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
