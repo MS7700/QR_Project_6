@@ -39,6 +39,19 @@ namespace QR_Project_6.Controllers
             return View(cliente);
         }
 
+        public ActionResult _GetTransacciones(int? id)
+        {
+            List<Transaccion> transaccions = db.Transaccions.Where(t => t.Cliente.PersonaID == id).Include(t => t.Cliente).Include(t => t.Empleado).Include(t => t.Estado_Transaccion).ToList();
+            
+            return PartialView(transaccions);
+        }
+        public ActionResult _GetProductos(int? id)
+        {
+            var trans_prod = db.Transaccion_Productos.Where(t => t.TransaccionID == id).Include(t => t.Producto).Include(t => t.Transaccion);
+            
+            return PartialView(trans_prod);
+        }
+
         // GET: Clientes/Create
         public ActionResult Create()
         {
