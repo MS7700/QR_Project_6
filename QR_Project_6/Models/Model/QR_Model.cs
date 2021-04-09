@@ -116,9 +116,9 @@
                                                     .WithMany(b => b.Respuesta_Empleado1).HasForeignKey(b => b.Sucursal_Sucursal_DestinoID);
 
             modelBuilder.Entity<Respuesta_Empleado>().HasOptional(p => p.Queja)
-                                                    .WithMany(b => b.Respuesta_Empleado).HasForeignKey(b => b.Queja_QuejaID);
+                                                    .WithMany(b => b.Respuesta_Empleado).HasForeignKey(b => b.Queja_QuejaID).WillCascadeOnDelete(true);
             modelBuilder.Entity<Respuesta_Empleado>().HasOptional(p => p.Reclamacion)
-                                                    .WithMany(b => b.Respuesta_Empleado).HasForeignKey(b => b.Reclamacion_ReclamacionID);
+                                                    .WithMany(b => b.Respuesta_Empleado).HasForeignKey(b => b.Reclamacion_ReclamacionID).WillCascadeOnDelete(true);
         }
 
         private static void setForeignKeyRespuesta_Cliente(DbModelBuilder modelBuilder)
@@ -128,9 +128,9 @@
             modelBuilder.Entity<Respuesta_Cliente>().HasOptional(p => p.Estado_Destino)
                                                     .WithMany(b => b.Respuesta_Cliente1).HasForeignKey(b => b.Estado_QR_Estado_DestinoID);
             modelBuilder.Entity<Respuesta_Cliente>().HasOptional(p => p.Queja)
-                                                    .WithMany(b => b.Respuesta_Cliente).HasForeignKey(b => b.Queja_QuejaID);
+                                                    .WithMany(b => b.Respuesta_Cliente).HasForeignKey(b => b.Queja_QuejaID).WillCascadeOnDelete(true);
             modelBuilder.Entity<Respuesta_Cliente>().HasOptional(p => p.Reclamacion)
-                                                    .WithMany(b => b.Respuesta_Cliente).HasForeignKey(b => b.Reclamacion_ReclamacionID);
+                                                    .WithMany(b => b.Respuesta_Cliente).HasForeignKey(b => b.Reclamacion_ReclamacionID).WillCascadeOnDelete(true);
         }
 
         private static void setForeignKeyReclamacion(DbModelBuilder modelBuilder)

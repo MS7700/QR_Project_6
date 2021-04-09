@@ -92,6 +92,7 @@
 
     </dl>
 </div>
+<div id="RespuestasDiv" class="toggleDiv"></div>
 <p>
     @if (User.IsInRole("Empleado"))
     {
@@ -102,6 +103,21 @@
     {
         @Html.ActionLink("Responder", "CreateFromReclamacion", "Respuesta_Cliente", new { id = Model.QRID }, new { @class = "btn btn-primary" })
     }
+    <button class="btn btn-info" type="button" onclick="MostrarRespuestas(this.id)" id="@Model.QRID">Mostrar respuestas</button>
     @Html.ActionLink("Editar", "Edit", new { id = Model.QRID }, new { @class = "btn btn-primary" })
     @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-default" })
 </p>
+
+<script>
+    function MostrarRespuestas(id_queja) {
+        $.ajax({
+            url: '@Url.Action("_ListRespuestas", "Reclamacions")',
+            data: { id: id_queja},
+            type: "POST",
+            success: function(data) {
+                $('#RespuestasDiv').html(data);
+                $('.toggleDiv').fadeToggle();
+            }
+        });
+    }
+</script>

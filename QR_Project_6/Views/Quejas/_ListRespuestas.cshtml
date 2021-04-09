@@ -1,0 +1,15 @@
+﻿@model IEnumerable<QR_Project_6.Models.Respuesta>
+
+<h1>Respuestas</h1>
+@foreach (var item in Model)
+{
+
+if (item is QR_Project_6.Models.Respuesta_Empleado)
+{
+    @Html.Partial("_DetailsRespuestaEmpleado", (QR_Project_6.Models.Respuesta_Empleado)item)
+}
+else if (item is QR_Project_6.Models.Respuesta_Cliente)
+{
+    @Html.Partial("_DetailsRespuestaCliente", (QR_Project_6.Models.Respuesta_Cliente)item)
+}
+}

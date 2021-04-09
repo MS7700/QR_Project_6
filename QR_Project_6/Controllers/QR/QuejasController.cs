@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using QR_Project_6.Extensions;
 using QR_Project_6.Models;
 using QR_Project_6.Models.Cuentas;
 using QR_Project_6.Models.Estados;
@@ -86,6 +87,27 @@ namespace QR_Project_6.Controllers
                 return HttpNotFound();
             }
             return View(queja);
+        }
+        [HttpPost]
+        public ActionResult _ListRespuestas(int? id)
+        {
+            List<Respuesta> respuestas = new List<Respuesta>();
+            AddListRespuestasQuejas(id, respuestas);
+            return PartialView(respuestas);
+        }
+
+        private void AddListRespuestasQuejas(int? id_queja, List<Respuesta> respuestas)
+        {
+            
+            List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Queja_QuejaID == id_queja).ToList();
+            List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Queja_QuejaID == id_queja).ToList();
+            if (respuestas == null)
+            {
+                respuestas = new List<Respuesta>();
+            }
+            respuestas.AddRange(respuesta_Clientes);
+           respuestas.AddRange(respuesta_Empleados);
+           respuestas.Sort(ModelHelpers.CompareRespuestas);
         }
 
         // GET: Quejas/Create

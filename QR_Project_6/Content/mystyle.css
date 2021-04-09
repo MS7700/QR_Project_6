@@ -70,3 +70,7 @@
     /* for Safari, Chrome, Opera */
     -webkit-appearance: none;
 }
+
+.toggleDiv {
+    display: none;
+}

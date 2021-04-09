@@ -553,6 +553,12 @@
     <Content Include="Views\Clientes\_GetProductos.cshtml" />
     <Content Include="Views\Clientes\_GetDireccion.cshtml" />
     <Content Include="Views\Empleadoes\_GetDireccion.cshtml" />
+    <Content Include="Views\Quejas\_DetailsRespuestaCliente.cshtml" />
+    <Content Include="Views\Quejas\_DetailsRespuestaEmpleado.cshtml" />
+    <Content Include="Views\Quejas\_ListRespuestas.cshtml" />
+    <Content Include="Views\Reclamacions\_DetailsRespuestaCliente.cshtml" />
+    <Content Include="Views\Reclamacions\_DetailsRespuestaEmpleado.cshtml" />
+    <Content Include="Views\Reclamacions\_ListRespuestas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
