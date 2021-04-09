@@ -544,6 +544,11 @@
     <Content Include="Views\Reportes\_Valoraciones.cshtml" />
     <Content Include="Views\Reportes\Satisfaccion.cshtml" />
     <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Reportes\Quejas.cshtml" />
+    <Content Include="Views\Reportes\_Quejas.cshtml" />
+    <Content Include="Views\Reportes\_Estados.cshtml" />
+    <Content Include="Views\Reportes\_Reclamaciones.cshtml" />
+    <Content Include="Views\Reportes\Reclamaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

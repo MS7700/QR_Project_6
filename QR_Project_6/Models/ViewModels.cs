@@ -65,4 +65,53 @@ namespace QR_Project_6.Models
         public int Cantidad { get; set; }
         public decimal Porcentaje { get; set; }
     }
+
+    public class QuejaReportViewModel
+    {
+        [Display(Name = "Número de queja")]
+        public int Numero { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
+        public DateTime Fecha { get; set; }
+        public string Cliente { get; set; }
+        public string Departamento { get; set; }
+        public string Sucursal { get; set; }
+        public string Empleado { get; set; }
+        public string Estado { get; set; }
+        [Display(Name = "Tipo de queja")]
+        public string Tipo { get; set; }
+        public string Comentario { get; set; }
+        
+    }
+    public class ReclamacionReportViewModel
+    {
+        [Display(Name = "Número de queja")]
+        public int Numero { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
+        public DateTime Fecha { get; set; }
+        public string Cliente { get; set; }
+        public string Departamento { get; set; }
+        public string Sucursal { get; set; }
+        public string Empleado { get; set; }
+        public string Estado { get; set; }
+        [Display(Name = "Tipo de queja")]
+        public string Tipo { get; set; }
+        public string Comentario { get; set; }
+
+    }
+    public class EstadoViewModel
+    {
+        public string Estado { get; set; }
+        public int Cantidad { get; set; }
+        public decimal Porcentaje { get; set; }
+    }
+    public class QuejasReportViewModel
+    {
+        public List<QuejaReportViewModel> Quejas { get; set; }
+        public List<EstadoViewModel> Estados { get; set; }
+    }
+    public class ReclamacionesReportViewModel
+    {
+        public List<ReclamacionReportViewModel> Reclamaciones { get; set; }
+        public List<EstadoViewModel> Estados { get; set; }
+    }
 }

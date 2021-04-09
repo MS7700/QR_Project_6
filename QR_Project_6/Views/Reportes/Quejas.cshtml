@@ -1,0 +1,17 @@
+﻿@model QR_Project_6.Models.QuejasReportViewModel
+@{
+    ViewBag.Title = "Quejas";
+}
+
+<h2>Quejas</h2>
+
+<a href="@Url.Action("ExportQuejas")">Download Excel</a>
+
+@Html.Partial("_Quejas", Model.Quejas)
+
+<h3>Estado de quejas</h3>
+@Html.Partial("_Estados", Model.Estados)
+
+<div>
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-default" })
+</div>
