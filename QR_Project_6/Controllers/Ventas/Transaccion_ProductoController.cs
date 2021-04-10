@@ -52,6 +52,12 @@ namespace QR_Project_6.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TransaccionID,ProductoID,Cantidad_Producto")] Transaccion_Producto transaccion_Producto)
         {
+            bool invalid = db.Transaccion_Productos.Any(t => (t.TransaccionID == transaccion_Producto.TransaccionID) && (t.ProductoID == transaccion_Producto.ProductoID));
+            if (invalid)
+            {
+                ModelState.AddModelError("", "Esta transacción ya existe");
+
+            }
             if (ModelState.IsValid)
             {
                 db.Transaccion_Productos.Add(transaccion_Producto);

@@ -11,7 +11,7 @@
     Estado_QR_Helper estado_QR_Helper = new Estado_QR_Helper();
 }
 
-<h2>CreateFromQueja</h2>
+<h2>Responder reclamación</h2>
 
 @Html.Partial("_DetailsReclamacion", Model.ReclamacionViewModel)
 
@@ -31,7 +31,7 @@
             @Html.LabelFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, (SelectList)ViewBag.ID_Estado_Destino, null, new { @class = "form-control" })
-                @*@Html.DropDownList("ID_Estado_Destino", null, htmlAttributes: new { @class = "form-control" })*@
+                
                 @Html.ValidationMessageFor(model => model.Respuesta_Cliente.Estado_QR_Estado_DestinoID, "", new { @class = "text-danger" })
             </div>
         </div>

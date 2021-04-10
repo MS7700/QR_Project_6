@@ -5,7 +5,7 @@
     Estado_QR_Helper estado_QR_Helper = new Estado_QR_Helper();
 }
 
-<h2>CreateFromQueja</h2>
+<h2>Responder queja</h2>
 
 @Html.Partial("_DetailsQueja", Model.QuejaViewModel)
 
@@ -17,12 +17,6 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @*@Html.HiddenFor(model => model.Respuesta_Empleado.Id_Queja,new {  })
-        @Html.Hidden("Id_Queja", Model.QuejaViewModel.Queja.ID_Queja)
-        @Html.Hidden("ID_Empleado_Origen", Model.QuejaViewModel.Queja.Id_Empleado)
-        @Html.Hidden("ID_Departamento_Origen", Model.QuejaViewModel.Queja.ID_Departamento)
-        @Html.Hidden("ID_Estado_Origen", Model.QuejaViewModel.Queja.ID_Estado_QR)
-        @Html.Hidden("ID_Sucursal_Origen", Model.QuejaViewModel.Queja.ID_Sucursal)*@
 
     @Html.HiddenFor(model => model.QuejaViewModel.Queja.QRID)
     @Html.HiddenFor(model => model.Respuesta_Empleado.Sucursal_Sucursal_OrigenID)

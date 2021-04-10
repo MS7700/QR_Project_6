@@ -3,13 +3,13 @@
     ViewBag.Title = "Satisfaccion";
 }
 
-<h2>Satisfaccion</h2>
+<h2>Satisfacción</h2>
 
 
 
 @Html.Partial("_Valoraciones", Model.Valoracions)
 
-<h3>Grado de satifacción total: @Model.GradoSatisfaccion%</h3>
+<h3>Grado de satisfacción total: @Model.GradoSatisfaccion%</h3>
 
 <div>
     @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-default" })

@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using OfficeOpenXml;
+using System.IO;
 
 namespace QR_Project_6.Controllers
 {
@@ -50,38 +51,44 @@ namespace QR_Project_6.Controllers
             return satisfaccions;
         }
 
-
-
-        // GET: Reportes/Export
-        public void ExportSatisfaccion()
+        public ActionResult ExportSatisfaccion()
         {
-            SatisfaccionViewModel model = InitializarSatisfaccionViewModel();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            ExcelPackage Ep = new ExcelPackage();
-            ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
-            Sheet.Cells["A1"].Value = "Valoración";
-            Sheet.Cells["B1"].Value = "Cantidad";
-            Sheet.Cells["C1"].Value = "Porcentaje";
-            int row = 2;
-            foreach (var item in model.Valoracions)
+            using (ExcelPackage Ep = new ExcelPackage())
             {
+                
+                SatisfaccionViewModel model = InitializarSatisfaccionViewModel();
+                
+                //ExcelPackage Ep = new ExcelPackage();
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
+                Sheet.Cells["A1"].Value = "Valoración";
+                Sheet.Cells["B1"].Value = "Cantidad";
+                Sheet.Cells["C1"].Value = "Porcentaje";
+                int row = 2;
+                foreach (var item in model.Valoracions)
+                {
 
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.Valoracion;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.Cantidad;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.Porcentaje;
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.Valoracion;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.Cantidad;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.Porcentaje;
+                    row++;
+                }
+
                 row++;
+                Sheet.Cells[string.Format("A{0}", row)].Value = "Grado de satisfacción: ";
+                Sheet.Cells[string.Format("B{0}", row)].Value = string.Format("{0}%", model.GradoSatisfaccion);
+
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+
+                var stream = new MemoryStream();
+                Ep.SaveAs(stream);
+
+                string fileName = "SatisfaccionExport.xlsx";
+                string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                stream.Position = 0;
+                return File(stream, contentType, fileName);
             }
-
-            row++;
-            Sheet.Cells[string.Format("A{0}", row)].Value = "Grado de satisfacción: ";
-            Sheet.Cells[string.Format("B{0}", row)].Value = string.Format("{0}%", model.GradoSatisfaccion);
-
-            Sheet.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
-            Response.BinaryWrite(Ep.GetAsByteArray());
-            Response.End();
         }
 
         private decimal getGradoPonderado(decimal puntuacionTotal, decimal valorMaximo, int cantidad)
@@ -145,12 +152,12 @@ namespace QR_Project_6.Controllers
                     QuejaReportViewModel tempQueja = new QuejaReportViewModel();
                     tempQueja.Numero = q.QRID.GetValueOrDefault();
                     tempQueja.Fecha = q.Fecha.GetValueOrDefault();
-                    tempQueja.Cliente = q.Cliente.Nombre + " " + q.Cliente.Apellido;
-                    tempQueja.Departamento = q.Departamento.Nombre;
-                    tempQueja.Sucursal = q.Sucursal.Nombre;
-                    tempQueja.Empleado = q.Empleado.Nombre + " " + q.Empleado.Apellido;
-                    tempQueja.Estado = q.Estado_QR.Descripcion;
-                    tempQueja.Tipo = q.Tipo_Queja.Descripcion;
+                    tempQueja.Cliente = q.Cliente?.Nombre + " " + q.Cliente?.Apellido;
+                    tempQueja.Departamento = q.Departamento?.Nombre;
+                    tempQueja.Sucursal = q.Sucursal?.Nombre;
+                    tempQueja.Empleado = q.Empleado?.Nombre + " " + q.Empleado?.Apellido;
+                    tempQueja.Estado = q.Estado_QR?.Descripcion;
+                    tempQueja.Tipo = q.Tipo_Queja?.Descripcion;
                     tempQueja.Comentario = q.Comentario;
 
                     quejas.Add(tempQueja);
@@ -159,59 +166,67 @@ namespace QR_Project_6.Controllers
             quejasReport.Quejas = quejas;
         }
 
-        public void ExportQuejas()
+        public ActionResult ExportQuejas()
         {
-            QuejasReportViewModel quejasReport = InitializarQuejasReportViewModel();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            ExcelPackage Ep = new ExcelPackage();
-            ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
-            Sheet.Cells["A1"].Value = "Número de queja";
-            Sheet.Cells["B1"].Value = "Fecha";
-            Sheet.Cells["C1"].Value = "Cliente";
-            Sheet.Cells["D1"].Value = "Departamento";
-            Sheet.Cells["E1"].Value = "Sucursal";
-            Sheet.Cells["F1"].Value = "Empleado";
-            Sheet.Cells["G1"].Value = "Estado";
-            Sheet.Cells["H1"].Value = "Tipo de queja";
-            Sheet.Cells["I1"].Value = "Comentario";
-            int row = 2;
-            foreach (var item in quejasReport.Quejas)
+            using (ExcelPackage Ep = new ExcelPackage())
             {
+                QuejasReportViewModel quejasReport = InitializarQuejasReportViewModel();
 
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.Numero;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.Fecha;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.Cliente;
-                Sheet.Cells[string.Format("D{0}", row)].Value = item.Departamento;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.Sucursal;
-                Sheet.Cells[string.Format("F{0}", row)].Value = item.Empleado;
-                Sheet.Cells[string.Format("G{0}", row)].Value = item.Estado;
-                Sheet.Cells[string.Format("H{0}", row)].Value = item.Tipo;
-                Sheet.Cells[string.Format("I{0}", row)].Value = item.Comentario;
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
+                Sheet.Cells["A1"].Value = "Número de queja";
+                Sheet.Cells["B1"].Value = "Fecha";
+                Sheet.Cells["C1"].Value = "Cliente";
+                Sheet.Cells["D1"].Value = "Departamento";
+                Sheet.Cells["E1"].Value = "Sucursal";
+                Sheet.Cells["F1"].Value = "Empleado";
+                Sheet.Cells["G1"].Value = "Estado";
+                Sheet.Cells["H1"].Value = "Tipo de queja";
+                Sheet.Cells["I1"].Value = "Comentario";
+                int row = 2;
+                foreach (var item in quejasReport.Quejas)
+                {
+
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.Numero;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.Fecha;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.Cliente;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.Departamento;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.Sucursal;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = item.Empleado;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = item.Estado;
+                    Sheet.Cells[string.Format("H{0}", row)].Value = item.Tipo;
+                    Sheet.Cells[string.Format("I{0}", row)].Value = item.Comentario;
+                    row++;
+                }
+
                 row++;
+
+                Sheet.Cells[string.Format("A{0}", row)].Value = "Estado";
+                Sheet.Cells[string.Format("B{0}", row)].Value = "Cantidad";
+                Sheet.Cells[string.Format("C{0}", row)].Value = "Porcentaje";
+
+                foreach (var item in quejasReport.Estados)
+                {
+
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.Estado;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.Cantidad;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = string.Format("{0}%", item.Porcentaje);
+                    row++;
+                }
+
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+
+                var stream = new MemoryStream();
+                Ep.SaveAs(stream);
+
+                string fileName = "QuejasReport.xlsx";
+                string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                stream.Position = 0;
+                return File(stream, contentType, fileName);
             }
-
-            row++;
-
-            Sheet.Cells[string.Format("A{0}", row)].Value = "Estado";
-            Sheet.Cells[string.Format("B{0}", row)].Value = "Cantidad";
-            Sheet.Cells[string.Format("C{0}", row)].Value = "Porcentaje";
-            
-            foreach (var item in quejasReport.Estados)
-            {
-
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.Estado;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.Cantidad;
-                Sheet.Cells[string.Format("C{0}", row)].Value = string.Format("{0}%", item.Porcentaje);
-                row++;
-            }
-
-            Sheet.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
-            Response.BinaryWrite(Ep.GetAsByteArray());
-            Response.End();
         }
+
 
 
         public ActionResult Reclamaciones()
@@ -266,12 +281,12 @@ namespace QR_Project_6.Controllers
                     ReclamacionReportViewModel tempReclamacion = new ReclamacionReportViewModel();
                     tempReclamacion.Numero = q.QRID.GetValueOrDefault();
                     tempReclamacion.Fecha = q.Fecha.GetValueOrDefault();
-                    tempReclamacion.Cliente = q.Cliente.Nombre + " " + q.Cliente.Apellido;
-                    tempReclamacion.Departamento = q.Departamento.Nombre;
-                    tempReclamacion.Sucursal = q.Sucursal.Nombre;
-                    tempReclamacion.Empleado = q.Empleado.Nombre + " " + q.Empleado.Apellido;
-                    tempReclamacion.Estado = q.Estado_QR.Descripcion;
-                    tempReclamacion.Tipo = q.Tipo_Reclamacion.Descripcion;
+                    tempReclamacion.Cliente = q.Cliente?.Nombre + " " + q.Cliente?.Apellido;
+                    tempReclamacion.Departamento = q.Departamento?.Nombre;
+                    tempReclamacion.Sucursal = q.Sucursal?.Nombre;
+                    tempReclamacion.Empleado = q.Empleado?.Nombre + " " + q.Empleado?.Apellido;
+                    tempReclamacion.Estado = q.Estado_QR?.Descripcion;
+                    tempReclamacion.Tipo = q.Tipo_Reclamacion?.Descripcion;
                     tempReclamacion.Comentario = q.Comentario;
 
                     reclamaciones.Add(tempReclamacion);
@@ -279,60 +294,120 @@ namespace QR_Project_6.Controllers
                 );
             reclamacionesReport.Reclamaciones = reclamaciones;
         }
-
-        public void ExportReclamaciones()
+        
+        public ActionResult ExportReclamaciones()
         {
-            ReclamacionesReportViewModel reclamacionesReport = InitializarReclamacionesReportViewModel();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            ExcelPackage Ep = new ExcelPackage();
-            ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
-            Sheet.Cells["A1"].Value = "Número de reclamacion";
-            Sheet.Cells["B1"].Value = "Fecha";
-            Sheet.Cells["C1"].Value = "Cliente";
-            Sheet.Cells["D1"].Value = "Departamento";
-            Sheet.Cells["E1"].Value = "Sucursal";
-            Sheet.Cells["F1"].Value = "Empleado";
-            Sheet.Cells["G1"].Value = "Estado";
-            Sheet.Cells["H1"].Value = "Tipo de reclamacion";
-            Sheet.Cells["I1"].Value = "Comentario";
-            int row = 2;
-            foreach (var item in reclamacionesReport.Reclamaciones)
+            using (ExcelPackage Ep = new ExcelPackage())
             {
+                
+                ReclamacionesReportViewModel reclamacionesReport = InitializarReclamacionesReportViewModel();
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
+                Sheet.Cells["A1"].Value = "Número de reclamacion";
+                Sheet.Cells["B1"].Value = "Fecha";
+                Sheet.Cells["C1"].Value = "Cliente";
+                Sheet.Cells["D1"].Value = "Departamento";
+                Sheet.Cells["E1"].Value = "Sucursal";
+                Sheet.Cells["F1"].Value = "Empleado";
+                Sheet.Cells["G1"].Value = "Estado";
+                Sheet.Cells["H1"].Value = "Tipo de reclamacion";
+                Sheet.Cells["I1"].Value = "Comentario";
+                int row = 2;
+                foreach (var item in reclamacionesReport.Reclamaciones)
+                {
 
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.Numero;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.Fecha;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.Cliente;
-                Sheet.Cells[string.Format("D{0}", row)].Value = item.Departamento;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.Sucursal;
-                Sheet.Cells[string.Format("F{0}", row)].Value = item.Empleado;
-                Sheet.Cells[string.Format("G{0}", row)].Value = item.Estado;
-                Sheet.Cells[string.Format("H{0}", row)].Value = item.Tipo;
-                Sheet.Cells[string.Format("I{0}", row)].Value = item.Comentario;
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.Numero;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.Fecha;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.Cliente;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.Departamento;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.Sucursal;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = item.Empleado;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = item.Estado;
+                    Sheet.Cells[string.Format("H{0}", row)].Value = item.Tipo;
+                    Sheet.Cells[string.Format("I{0}", row)].Value = item.Comentario;
+                    row++;
+                }
+
                 row++;
+
+                Sheet.Cells[string.Format("A{0}", row)].Value = "Estado";
+                Sheet.Cells[string.Format("B{0}", row)].Value = "Cantidad";
+                Sheet.Cells[string.Format("C{0}", row)].Value = "Porcentaje";
+
+                foreach (var item in reclamacionesReport.Estados)
+                {
+
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.Estado;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.Cantidad;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = string.Format("{0}%", item.Porcentaje);
+                    row++;
+                }
+
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+                var stream = new MemoryStream();
+                Ep.SaveAs(stream);
+
+                string fileName = "ReclamacionesReport.xlsx";
+                string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                stream.Position = 0;
+                return File(stream, contentType, fileName);
             }
-
-            row++;
-
-            Sheet.Cells[string.Format("A{0}", row)].Value = "Estado";
-            Sheet.Cells[string.Format("B{0}", row)].Value = "Cantidad";
-            Sheet.Cells[string.Format("C{0}", row)].Value = "Porcentaje";
-
-            foreach (var item in reclamacionesReport.Estados)
-            {
-
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.Estado;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.Cantidad;
-                Sheet.Cells[string.Format("C{0}", row)].Value = string.Format("{0}%", item.Porcentaje);
-                row++;
-            }
-
-            Sheet.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
-            Response.BinaryWrite(Ep.GetAsByteArray());
-            Response.End();
         }
+
+        //public void ExportReclamaciones()
+        //{
+        //    ReclamacionesReportViewModel reclamacionesReport = InitializarReclamacionesReportViewModel();
+        //    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        //    ExcelPackage Ep = new ExcelPackage();
+        //    ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Report");
+        //    Sheet.Cells["A1"].Value = "Número de reclamacion";
+        //    Sheet.Cells["B1"].Value = "Fecha";
+        //    Sheet.Cells["C1"].Value = "Cliente";
+        //    Sheet.Cells["D1"].Value = "Departamento";
+        //    Sheet.Cells["E1"].Value = "Sucursal";
+        //    Sheet.Cells["F1"].Value = "Empleado";
+        //    Sheet.Cells["G1"].Value = "Estado";
+        //    Sheet.Cells["H1"].Value = "Tipo de reclamacion";
+        //    Sheet.Cells["I1"].Value = "Comentario";
+        //    int row = 2;
+        //    foreach (var item in reclamacionesReport.Reclamaciones)
+        //    {
+
+        //        Sheet.Cells[string.Format("A{0}", row)].Value = item.Numero;
+        //        Sheet.Cells[string.Format("B{0}", row)].Value = item.Fecha;
+        //        Sheet.Cells[string.Format("C{0}", row)].Value = item.Cliente;
+        //        Sheet.Cells[string.Format("D{0}", row)].Value = item.Departamento;
+        //        Sheet.Cells[string.Format("E{0}", row)].Value = item.Sucursal;
+        //        Sheet.Cells[string.Format("F{0}", row)].Value = item.Empleado;
+        //        Sheet.Cells[string.Format("G{0}", row)].Value = item.Estado;
+        //        Sheet.Cells[string.Format("H{0}", row)].Value = item.Tipo;
+        //        Sheet.Cells[string.Format("I{0}", row)].Value = item.Comentario;
+        //        row++;
+        //    }
+
+        //    row++;
+
+        //    Sheet.Cells[string.Format("A{0}", row)].Value = "Estado";
+        //    Sheet.Cells[string.Format("B{0}", row)].Value = "Cantidad";
+        //    Sheet.Cells[string.Format("C{0}", row)].Value = "Porcentaje";
+
+        //    foreach (var item in reclamacionesReport.Estados)
+        //    {
+
+        //        Sheet.Cells[string.Format("A{0}", row)].Value = item.Estado;
+        //        Sheet.Cells[string.Format("B{0}", row)].Value = item.Cantidad;
+        //        Sheet.Cells[string.Format("C{0}", row)].Value = string.Format("{0}%", item.Porcentaje);
+        //        row++;
+        //    }
+
+        //    Sheet.Cells["A:AZ"].AutoFitColumns();
+        //    Response.Clear();
+        //    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        //    Response.AddHeader("content-disposition", "attachment: filename=" + "Report.xlsx");
+        //    Response.BinaryWrite(Ep.GetAsByteArray());
+        //    Response.End();
+        //}
         
     }
 }
