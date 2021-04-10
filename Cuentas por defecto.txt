@@ -1,0 +1,11 @@
+Administrador
+admin@gmail.com
+123456
+
+Empleado
+empleado@gmail.com
+123456
+
+Cliente
+cliente@gmail.com
+123456

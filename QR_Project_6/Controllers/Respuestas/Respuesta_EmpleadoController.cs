@@ -243,26 +243,12 @@ namespace QR_Project_6.Controllers
             RespuestaEmpleadoReclamacionViewModel viewmodel = InitializeRERViewModel(reclamacion);
 
             int? id_reclamacion = reclamacion.QRID;
-            //AddListRespuestasReclamacion(reclamacion, viewmodel);
             AddListRespuestasReclamacion(viewmodel, id_reclamacion);
             Respuesta_Empleado respuesta_Empleado = viewmodel.Respuesta_Empleado;
 
-            //List<Estado_QR> disabled = new List<Estado_QR>();
-            //disabled.Add(db.Estado_QR.Find(Estado_QR.GetIdByDescripcion(Estado_QR.REABIERTO_DISCONFORMIDAD)));
-            //disabled.Add(db.Estado_QR.Find(Estado_QR.GetIdByDescripcion(Estado_QR.ABIERTO)));
-
             AddViewBagCreate(respuesta_Empleado);
 
-            //SelectList listItems = new SelectList(db.Estado_QR, "ID_Estado_QR", "Descripcion", respuesta_Empleado.ID_Estado_Origen);
-            //ViewBag.ID_Departamento_Destino = new SelectList(db.Departamento, "ID_Departamento", "Nombre", respuesta_Empleado.ID_Departamento_Origen);
-            //ViewBag.ID_Empleado_Destino = new SelectList(db.Empleado, "ID_Empleado", "Identificacion", respuesta_Empleado.ID_Empleado_Origen);
-            //ViewBag.ID_Estado_Destino = listItems;
-            //ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursal, "ID_Sucursal", "Nombre", respuesta_Empleado.ID_Sucursal_Origen);
-
-            //ViewBag.ID_Departamento_Destino = new SelectList(db.Departamento, "ID_Departamento", "Nombre",);
-            //ViewBag.ID_Empleado_Destino = new SelectList(db.Empleado, "ID_Empleado", "Identificacion");
-            //ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QR, "ID_Estado_QR", "Descripcion");
-            //ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursal, "ID_Sucursal", "Nombre");
+            
             return View(viewmodel);
         }
 
@@ -295,15 +281,6 @@ namespace QR_Project_6.Controllers
             viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Empleados);
             viewmodel.ReclamacionViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
         }
-        //private void AddListRespuestasReclamacion(Reclamacion reclamacion, RespuestaEmpleadoReclamacionViewModel viewmodel)
-        //{
-        //    int? id_reclamacion = reclamacion.QRID;
-        //    List<Respuesta_Empleado> respuesta_Empleados = db.Respuesta_Empleados.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
-        //    List<Respuesta_Cliente> respuesta_Clientes = db.Respuesta_Clientes.Where(e => e.Reclamacion_ReclamacionID == id_reclamacion).ToList();
-        //    viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Clientes);
-        //    viewmodel.ReclamacionViewModel.Respuestas.AddRange(respuesta_Empleados);
-        //    viewmodel.ReclamacionViewModel.Respuestas.Sort(ModelHelpers.CompareRespuestas);
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -321,35 +298,6 @@ namespace QR_Project_6.Controllers
 
                 AddParametrosDestinoPorEstado(empleado, respuesta_Empleado);
 
-                //if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.PENDIENTE_VALORACION))
-                //{
-                //    respuesta_Empleado.ID_Empleado_Destino = empleado.ID_Empleado;
-                //    respuesta_Empleado.ID_Departamento_Destino = empleado.ID_Departamento;
-                //    respuesta_Empleado.ID_Sucursal_Destino = empleado.Id_Sucursal;
-                //}
-                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.REDIRIGIDO_DEPARTAMENTO))
-                //{
-                //    respuesta_Empleado.ID_Sucursal_Destino = empleado.Id_Sucursal;
-                //    respuesta_Empleado.ID_Empleado_Destino = null;
-                //}
-                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.REDIRIGIDO_SUCURSAL))
-                //{
-                //    respuesta_Empleado.ID_Departamento_Destino = CheckNull(respuesta_Empleado.ID_Departamento_Destino, respuesta_Empleado.ID_Departamento_Destino);
-                //    respuesta_Empleado.ID_Empleado_Destino = null;
-                //}
-                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.REDIRIGIDO_EMPLEADO))
-                //{
-                //    Empleado empleado_Destino = db.Empleado.Find(respuesta_Empleado.ID_Empleado_Destino);
-                //    respuesta_Empleado.ID_Departamento_Destino = empleado_Destino.ID_Departamento;
-                //    respuesta_Empleado.ID_Sucursal_Destino = empleado_Destino.Id_Sucursal;
-                //}
-                //else if (respuesta_Empleado.ID_Estado_Destino == Estado_QR.GetIdByDescripcion(Estado_QR.CERRADO))
-                //{
-                //    respuesta_Empleado.ID_Empleado_Destino = empleado.ID_Empleado;
-                //    respuesta_Empleado.ID_Departamento_Destino = empleado.ID_Departamento;
-                //    respuesta_Empleado.ID_Sucursal_Destino = empleado.Id_Sucursal;
-                //}
-
 
                 respuesta_Empleado.Empleado_Empleado_OrigenID = empleado.PersonaID;
                 reclamacion.Estado_QR_EstadoID = respuesta_Empleado.Estado_QR_Estado_DestinoID;
@@ -363,10 +311,7 @@ namespace QR_Project_6.Controllers
             }
 
             AddViewBagPostCreate(respuesta_Empleado);
-            //ViewBag.ID_Departamento_Destino = new SelectList(db.Departamento, "ID_Departamento", "Nombre", respuesta_Empleado.ID_Departamento_Destino);
-            //ViewBag.ID_Empleado_Destino = new SelectList(db.Empleado, "ID_Empleado", "Identificacion", respuesta_Empleado.ID_Empleado_Destino);
-            //ViewBag.ID_Estado_Destino = new SelectList(db.Estado_QR, "ID_Estado_QR", "Descripcion", respuesta_Empleado.ID_Estado_Destino);
-            //ViewBag.ID_Sucursal_Destino = new SelectList(db.Sucursal, "ID_Sucursal", "Nombre", respuesta_Empleado.ID_Sucursal_Destino);
+
             return View(viewModel);
         }
 
